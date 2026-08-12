@@ -1,0 +1,16 @@
+/* TLV Patient Care — Base element defaults
+   Thin layer only: page background, body type, link colour, focus ring. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font:var(--text-body-role);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,h5{margin:0;color:var(--text-strong);font-family:var(--font-display);letter-spacing:var(--tracking-snug);text-wrap:balance}
+h1{font:var(--text-h1)}h2{font:var(--text-h2)}h3{font:var(--text-h3)}h4{font:var(--text-h4)}h5{font:var(--text-h5)}
+p{margin:0 0 var(--space-5);max-width:var(--measure);text-wrap:pretty}
+a{color:var(--text-link);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px;transition:color var(--duration-fast) var(--ease-out)}
+a:hover{color:var(--text-link-hover);text-decoration-thickness:2.5px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--teal-600);outline-offset:2px;border-radius:var(--radius-xs)}
+strong,b{font-weight:var(--weight-bold);color:var(--text-strong)}
+small{font-size:var(--size-small)}
+hr{border:0;height:1px;background:var(--border-default);margin:var(--space-8) 0}
+img,svg{max-width:100%}
+::selection{background:var(--mint-200);color:var(--teal-900)}
