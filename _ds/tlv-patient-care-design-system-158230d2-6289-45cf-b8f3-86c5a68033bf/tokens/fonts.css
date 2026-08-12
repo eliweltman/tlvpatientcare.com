@@ -1,0 +1,6 @@
+/* TLV Patient Care — Webfonts
+   Headings: Elms Sans (Google Fonts). The brief said "Elm"; Elms Sans is the
+   closest available family and is the system's display face.
+   Body: Nunito Sans (Google Fonts).
+   Both are loaded from the Google Fonts CDN — no local binaries are shipped. */
+@import url('https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,300..800;1,300..800&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&display=swap');

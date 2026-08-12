@@ -1,0 +1,31 @@
+/* TLV Patient Care — Motion
+   Calm and unhurried. Fades and short travel only; no bounce, no spring, no
+   parallax. Motion never carries meaning on its own. */
+:root{
+  --duration-instant:80ms; /* @kind other */
+  --duration-fast:140ms; /* @kind other */
+  --duration-base:220ms; /* @kind other */
+  --duration-slow:320ms; /* @kind other */
+  --duration-page:420ms; /* @kind other */
+
+  --ease-out:cubic-bezier(.2,.8,.3,1); /* @kind other */
+  --ease-in-out:cubic-bezier(.45,.05,.35,1); /* @kind other */
+  --ease-entrance:cubic-bezier(.16,.84,.44,1); /* @kind other */
+
+  --transition-control:background-color var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out),transform var(--duration-fast) var(--ease-out);
+  --transition-surface:box-shadow var(--duration-base) var(--ease-out),transform var(--duration-base) var(--ease-out);
+
+  --lift-hover:translateY(-2px); /* @kind other */
+  --press-scale:scale(.985); /* @kind other */
+}
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --duration-instant:0ms; /* @kind other */
+    --duration-fast:0ms; /* @kind other */
+    --duration-base:0ms; /* @kind other */
+    --duration-slow:0ms; /* @kind other */
+    --duration-page:0ms; /* @kind other */
+    --lift-hover:none; /* @kind other */
+    --press-scale:none; /* @kind other */
+  }
+}

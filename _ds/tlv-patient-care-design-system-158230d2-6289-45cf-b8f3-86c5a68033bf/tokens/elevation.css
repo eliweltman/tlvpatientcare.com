@@ -1,0 +1,14 @@
+/* TLV Patient Care — Elevation
+   Shadows are tinted with the deep teal rather than pure black, so cards sit
+   on the warm page without a grey halo. Elevation is soft and low-contrast. */
+:root{
+  --shadow-xs:0 1px 2px rgba(10,50,58,.05);
+  --shadow-sm:0 1px 2px rgba(10,50,58,.05),0 2px 6px -2px rgba(10,50,58,.08);
+  --shadow-md:0 2px 4px rgba(10,50,58,.04),0 10px 24px -8px rgba(10,50,58,.14);
+  --shadow-lg:0 4px 8px rgba(10,50,58,.04),0 24px 48px -16px rgba(10,50,58,.18);
+  --shadow-xl:0 8px 16px rgba(10,50,58,.05),0 40px 80px -24px rgba(10,50,58,.22);
+  --shadow-inset:inset 0 1px 2px rgba(10,50,58,.06);
+  --shadow-card:var(--shadow-sm);
+  --shadow-card-hover:var(--shadow-md);
+  --shadow-overlay:var(--shadow-xl);
+}
