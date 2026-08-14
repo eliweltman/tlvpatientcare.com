@@ -30,8 +30,72 @@
 @font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-ExtraBold.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
 :root{--font-display:'Gilroy',system-ui,-apple-system,'Segoe UI',sans-serif}
+/* ================= PALETTE ==================================
+   The client's current palette, mapped onto the design system's existing
+   ramps so every component and token in the bundle picks it up. Named
+   values are used verbatim at the step marked (named); the neighbouring
+   steps are tints and shades of that same hue, never new hues.
+     Trust Blue    → the "teal" ramp, deepening to Deep Navy
+     Hope Green    → the "green" ramp, with Fresh Lime at 300
+     Caring Coral  → the "violet" ramp
+     Soft Sunshine → the "mint" ramp (warm accent on dark grounds)
+     Warm Peach    → the "aqua" ramp
+     Burnt Orange  → the "eggplant" ramp, i.e. the contrast CTA
+   ============================================================ */
+:root{
+  --teal-50:#eef6fb;  --teal-100:#d8ebf6; --teal-200:#b6d9ee; --teal-300:#78B6DA;
+  --teal-400:#549fca; --teal-500:#3d86b3; --teal-600:#2f6d94; --teal-700:#255875;
+  --teal-800:#1d4a5e; --teal-900:#173F4A; --teal-950:#0f2c34;
+
+  --blue-50:#eef6fb;  --blue-100:#d8ebf6; --blue-200:#b6d9ee; --blue-300:#78B6DA;
+  --blue-400:#549fca; --blue-500:#3d86b3; --blue-600:#2f6d94; --blue-700:#255875;
+
+  --green-50:#eef7f1;  --green-100:#dbeee2; --green-200:#c7e5d1; --green-300:#B7D36B;
+  --green-400:#6FB98A; --green-500:#57a273; --green-600:#45855e; --green-700:#366a4b;
+  --green-800:#2a5039;
+
+  --violet-50:#fef0f1;  --violet-100:#fbdcde; --violet-200:#f8bfc3; --violet-300:#F27F87;
+  --violet-400:#e46670; --violet-500:#bb3c48; --violet-600:#9e313d; --violet-700:#822832;
+  --violet-800:#621e26; --violet-900:#43151b;
+
+  --mint-50:#fff8e8;  --mint-100:#ffefcb; --mint-200:#ffe4a8; --mint-300:#FFD88A;
+  --mint-400:#f5c25a; --mint-500:#e0a838; --mint-600:#b8842a; --mint-700:#8f6620;
+
+  --aqua-50:#fef3e9;  --aqua-100:#fce2cb; --aqua-200:#fac9a0; --aqua-300:#F7A35C;
+  --aqua-400:#f08c3c; --aqua-500:#d9752a; --aqua-600:#b25e20;
+
+  --eggplant-50:#fdefe9;  --eggplant-100:#f9d7c8; --eggplant-200:#f0b193;
+  --eggplant-300:#e2855a; --eggplant-400:#d66634; --eggplant-500:#C94F24;
+  --eggplant-600:#A9441F; --eggplant-700:#8a3819; --eggplant-800:#6b2b13;
+
+  --focus-ring:0 0 0 4px rgba(120,182,218,.55);
+  --gradient-hope:linear-gradient(90deg,#B7D36B 0%,#6FB98A 26%,#5FAFB4 48%,#78B6DA 70%,#238C9B 88%,#F27F87 100%);
+  --gradient-calm:linear-gradient(160deg,var(--teal-50) 0%,var(--aqua-50) 55%,var(--green-50) 100%);
+  --gradient-dusk:linear-gradient(150deg,var(--teal-600) 0%,var(--teal-800) 48%,var(--teal-900) 100%);
+}
+
 *{box-sizing:border-box}
 img{height:auto}
+
+/* Motif — the heart-in-hands mark from the logo, reduced to a glyph and set
+   before every eyebrow label. currentColor means it tints itself to whatever
+   ground it lands on. */
+[data-eyebrow]{display:inline-flex;align-items:center;gap:9px}
+[data-eyebrow]::before{content:"";width:19px;height:19px;flex:none;background-color:currentColor;
+  -webkit-mask-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M19.414%2014.414C21%2012.828%2022%2011.5%2022%209.5a5.5%205.5%200%200%200-9.591-3.676.6.6%200%200%201-.818.001A5.5%205.5%200%200%200%202%209.5c0%202.3%201.5%204%203%205.5l5.535%205.362a2%202%200%200%200%202.879.052%202.12%202.12%200%200%200-.004-3%202.124%202.124%200%201%200%203-3%202.124%202.124%200%200%200%203.004%200%202%202%200%200%200%200-2.828l-1.881-1.882a2.41%202.41%200%200%200-3.409%200l-1.71%201.71a2%202%200%200%201-2.828%200%202%202%200%200%201%200-2.828l2.823-2.762%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E);mask-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M19.414%2014.414C21%2012.828%2022%2011.5%2022%209.5a5.5%205.5%200%200%200-9.591-3.676.6.6%200%200%201-.818.001A5.5%205.5%200%200%200%202%209.5c0%202.3%201.5%204%203%205.5l5.535%205.362a2%202%200%200%200%202.879.052%202.12%202.12%200%200%200-.004-3%202.124%202.124%200%201%200%203-3%202.124%202.124%200%200%200%203.004%200%202%202%200%200%200%200-2.828l-1.881-1.882a2.41%202.41%200%200%200-3.409%200l-1.71%201.71a2%202%200%200%201-2.828%200%202%202%200%200%201%200-2.828l2.823-2.762%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+  -webkit-mask-size:contain;mask-size:contain}
+
+/* The same mark, oversized and barely there, watermarking the closing bands. */
+[data-heartmark]{position:relative;isolation:isolate;overflow:hidden}
+[data-heartmark]::after{content:"";position:absolute;z-index:0;pointer-events:none;
+  right:-70px;bottom:-90px;width:420px;height:420px;opacity:.09;background-color:currentColor;
+  -webkit-mask-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M19.414%2014.414C21%2012.828%2022%2011.5%2022%209.5a5.5%205.5%200%200%200-9.591-3.676.6.6%200%200%201-.818.001A5.5%205.5%200%200%200%202%209.5c0%202.3%201.5%204%203%205.5l5.535%205.362a2%202%200%200%200%202.879.052%202.12%202.12%200%200%200-.004-3%202.124%202.124%200%201%200%203-3%202.124%202.124%200%200%200%203.004%200%202%202%200%200%200%200-2.828l-1.881-1.882a2.41%202.41%200%200%200-3.409%200l-1.71%201.71a2%202%200%200%201-2.828%200%202%202%200%200%201%200-2.828l2.823-2.762%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E);mask-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M19.414%2014.414C21%2012.828%2022%2011.5%2022%209.5a5.5%205.5%200%200%200-9.591-3.676.6.6%200%200%201-.818.001A5.5%205.5%200%200%200%202%209.5c0%202.3%201.5%204%203%205.5l5.535%205.362a2%202%200%200%200%202.879.052%202.12%202.12%200%200%200-.004-3%202.124%202.124%200%201%200%203-3%202.124%202.124%200%200%200%203.004%200%202%202%200%200%200%200-2.828l-1.881-1.882a2.41%202.41%200%200%200-3.409%200l-1.71%201.71a2%202%200%200%201-2.828%200%202%202%200%200%201%200-2.828l2.823-2.762%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+  -webkit-mask-size:contain;mask-size:contain}
+[data-heartmark] > *{position:relative;z-index:1}
 html,body{overflow-x:clip;max-width:100%}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font:var(--text-body-role);-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
@@ -39,6 +103,9 @@ h1,h2,h3{text-wrap:balance}
 /* Gilroy sets normal word spaces, so the corrective tracking the previous
    display face needed is gone. Leading stays a touch tighter than stock. */
 :root{--leading-tight:1.04;--leading-snug:1.16}
+/* Tighter section rhythm than stock — the pages read as one continuous
+   argument rather than a stack of separated panels. */
+:root{--section-y:72px;--section-y-lg:88px}
 
 /* Focus — audience is 65+, so the ring is thick and high-contrast */
 :focus-visible{outline:3px solid var(--teal-600);outline-offset:3px;border-radius:6px}
@@ -71,6 +138,44 @@ h1,h2,h3{text-wrap:balance}
 [data-faq-row]{transition:border-color .22s ease,box-shadow .22s ease,background .22s ease}
 [data-faq-q] svg,[data-faq-chevron]{transition:transform .32s cubic-bezier(.2,.8,.3,1)}
 
+/* ---- Home hero ----
+   The photograph is a full-bleed layer pinned to the right edge of the
+   VIEWPORT, not a card inside the grid: it is masked so its left side
+   dissolves into the section wash, and veiled at top and bottom so it
+   meets the header and the next section without a seam. The section's own
+   wash is built from palette tints that echo the picture — teal cardigan,
+   violet sweater, a green note for hope. */
+[data-hero-wrap]{position:relative;z-index:1;max-width:var(--container);margin:0 auto;
+  padding:clamp(72px,8vw,116px) var(--space-7);min-height:clamp(560px,72vh,720px);
+  display:flex;align-items:center}
+[data-hero-art]{position:absolute;top:0;bottom:0;right:0;z-index:0;
+  width:clamp(560px,60vw,1280px);
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%)}
+/* Shifted right so the senior clears the transparent edge of the mask. The
+   gap this opens on the left sits inside the fully masked zone, so it never
+   shows; only background at the far right is cropped away. */
+[data-hero-art] img{filter:saturate(1.04);transform:translateX(20%)}
+[data-hero-veil]{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(248,247,244,.55) 0%,rgba(248,247,244,0) 16%,rgba(243,248,234,0) 74%,var(--green-50) 100%)}
+[data-hero-h1]{font-family:var(--font-display);font-weight:700;
+  font-size:clamp(40px,4.4vw,62px);line-height:1.03;letter-spacing:var(--tracking-tight)}
+
+/* ---- Peace of mind ----
+   The hero treatment mirrored: the photograph is pinned to the LEFT edge of
+   the viewport and dissolves rightward into the deep navy, with the words
+   sitting on the solid side. Same masking idea, opposite direction. */
+[data-bleed-wrap]{position:relative;z-index:1;max-width:var(--container);margin:0 auto;
+  padding:clamp(64px,6vw,96px) var(--space-7);min-height:clamp(460px,58vh,600px);
+  display:flex;align-items:center}
+[data-bleed-art]{position:absolute;top:0;bottom:0;left:0;z-index:0;
+  width:clamp(420px,50vw,1060px);
+  -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%);
+  mask-image:linear-gradient(to left,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%)}
+[data-bleed-art] img{filter:saturate(1.02)}
+[data-bleed-veil]{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(47,109,148,.75) 0%,rgba(47,109,148,0) 20%,rgba(37,88,117,0) 72%,var(--teal-700) 100%)}
+
 /* Photographs settle in rather than snapping */
 [data-photo]{transition:transform .6s cubic-bezier(.2,.8,.3,1)}
 [data-photo]:hover{transform:scale(1.02)}
@@ -96,6 +201,9 @@ h1,h2,h3{text-wrap:balance}
 [data-stickycta] button{width:100%;justify-content:center}
 
 @media (max-width:1180px){
+  /* Narrower panel here, so a 20% shift would crowd the daughter against the
+     viewport edge. Less travel, same intent. */
+  main [data-hero-art] img{transform:translateX(12%)}
   main [data-cols="4"]{grid-template-columns:1fr 1fr!important}
   main [data-cols="3"]{grid-template-columns:1fr 1fr!important}
   main [data-split]{grid-template-columns:1fr .8fr!important}
@@ -110,6 +218,20 @@ h1,h2,h3{text-wrap:balance}
   main h2{font-size:clamp(28px,5vw,40px)!important}
   main [data-hero]{gap:var(--space-8)!important}
   footer [data-foot]{grid-template-columns:1fr 1fr!important;gap:var(--space-8)!important}
+  /* Below two columns the art stops being a side panel and becomes a band. */
+  /* The band is full-bleed, so the section gutter moves onto the wrap. */
+  main [data-hero-section]{display:flex;flex-direction:column;padding-inline:0!important}
+  main [data-hero-art]{position:static;order:-1;width:100%;height:min(46vh,380px);
+    -webkit-mask-image:none;mask-image:none}
+  main [data-hero-art] img{transform:none}
+  main [data-hero-veil]{background:linear-gradient(to bottom,rgba(248,247,244,0) 62%,var(--teal-50) 100%)}
+  main [data-hero-wrap]{min-height:0;padding-top:var(--space-8)}
+  main [data-bleed-section]{display:flex;flex-direction:column;padding-inline:0!important}
+  main [data-bleed-art]{position:static;order:-1;width:100%;height:min(40vh,320px);
+    -webkit-mask-image:none;mask-image:none}
+  main [data-bleed-veil]{background:linear-gradient(to bottom,rgba(47,109,148,0) 58%,var(--teal-500) 100%)}
+  main [data-bleed-wrap]{min-height:0;padding:var(--space-7) var(--space-5) var(--space-9)}
+  main [data-bleed-wrap] > div > div:first-child{display:none}
 }
 
 /* ---- Phone ---- */
@@ -138,11 +260,10 @@ h1,h2,h3{text-wrap:balance}
   main{padding-bottom:96px}
 
   /* Hero: the photograph leads, full-bleed, and the words follow. */
-  main [data-hero-section]{padding-top:0!important;padding-bottom:var(--space-10)!important}
-  main [data-hero-photo]{order:-1;height:min(44vh,340px)!important;border-radius:0!important;
-    margin-inline:calc(var(--space-5) * -1)!important;box-shadow:none!important}
+  main [data-hero-art]{height:min(42vh,320px)}
+  main [data-hero-wrap]{padding:var(--space-7) var(--space-5) var(--space-10)}
   main [data-hero]{gap:var(--space-7)!important}
-  main [data-hero] h1{max-width:none!important}
+  main [data-hero] h1{max-width:none!important;font-size:clamp(32px,8.4vw,42px)}
 
   /* One CTA per row, full width, so nothing is a small target. */
   main [data-actions]{flex-direction:column;align-items:stretch!important;width:100%;
@@ -209,7 +330,7 @@ a[data-plain]{text-decoration:none}
       <span style="{{ burger3 }}"></span>
     </button>
     <button data-logo onClick="{{ goHome }}" aria-label="TLV Patient Care Consultants, home" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;flex:none">
-      <img data-logo-full src="assets/logo/logo-primary.png" alt="TLV Patient Care Consultants" style="width:182px;max-width:100%;height:auto">
+      <img data-logo-full src="assets/logo/logo-llc.png" alt="TLV Patient Care Consultants LLC" width="1032" height="336" style="width:212px;max-width:100%;height:auto">
       <img data-logo-mark src="assets/logo/logo-mark.png" alt="TLV Patient Care Consultants" width="1400" height="965" style="width:67px;max-width:100%;height:auto">
     </button>
     <nav style="display:flex;gap:2px;margin-inline-start:auto">
@@ -237,32 +358,35 @@ a[data-plain]{text-decoration:none}
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <main data-screen-label="Home">
 
-  <section data-hero-section style="background:var(--gradient-calm);padding:var(--section-y-lg) var(--space-7)">
-    <div data-hero data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-10);align-items:center">
-      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">TLV Patient Care Consulting</span>
-        <sc-if value="{{ hlPrimary }}" hint-placeholder-val="{{ false }}"><h1 style="font:var(--text-display);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:19ch">Helping you manage your parent's healthcare with clarity and confidence.</h1></sc-if>
-        <sc-if value="{{ hlB }}" hint-placeholder-val="{{ false }}"><h1 style="font:var(--text-display);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:19ch">Support for your parent. Greater peace of mind for your family.</h1></sc-if>
-        <sc-if value="{{ hlC }}" hint-placeholder-val="{{ true }}"><h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:22ch">Patient advocacy and healthcare navigation for seniors and the families supporting them.</h1></sc-if>
-        <sc-if value="{{ hlD }}" hint-placeholder-val="{{ false }}"><h1 style="font:var(--text-display);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:19ch">Helping important healthcare details stay clear, organized, and understood.</h1></sc-if>
-        <p style="font:var(--text-lead);color:var(--text-muted);max-width:52ch">TLV Patient Care supports seniors and their families with patient portals, medical information, appointment preparation, and healthcare coordination, so important details do not get lost.</p>
-        <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;margin-top:var(--space-2)">
-          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
-          <button onClick="{{ goServices }}" style="background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--teal-700);cursor:pointer">See how TLV can help
-            <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="arrow-right" size="22px" hint-size="22px,22px"></x-import></button>
+  <section data-hero-section style="position:relative;isolation:isolate;overflow:hidden;padding:0;background:radial-gradient(1100px 680px at 76% 14%,var(--aqua-50) 0%,rgba(236,247,251,0) 62%),radial-gradient(900px 620px at 6% 92%,var(--mint-50) 0%,rgba(234,249,246,0) 64%),linear-gradient(166deg,var(--teal-50) 0%,var(--warm-25) 44%,var(--green-50) 100%)">
+    <div data-hero-art>
+      <img data-photo data-hero-img src="uploads/hero-image-1.png" alt="A daughter sitting beside her mother on the sofa, holding her hand" style="width:100%;height:100%;object-fit:cover;object-position:52% 30%;display:block">
+      <span data-hero-veil></span>
+    </div>
+    <div data-hero-wrap>
+      <div data-hero data-2col style="display:grid;grid-template-columns:minmax(0,min(600px,50vw)) 1fr;gap:var(--space-10);align-items:center">
+        <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+          <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">TLV Patient Care Consultants, LLC</span>
+          <sc-if value="{{ hlPrimary }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Helping you manage your loved one's healthcare with clarity and confidence.</h1></sc-if>
+          <sc-if value="{{ hlB }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Support for your loved one. Greater peace of mind for your family.</h1></sc-if>
+          <sc-if value="{{ hlC }}" hint-placeholder-val="{{ true }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:20ch">Patient advocacy and healthcare navigation for seniors and the families supporting them.</h1></sc-if>
+          <sc-if value="{{ hlD }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Helping important healthcare details stay clear, organized, and understood.</h1></sc-if>
+          <p style="font:var(--text-lead);color:var(--warm-700);max-width:46ch">We are the technology help and the healthcare guide seniors are rarely offered: patient portals set up and explained, medical information translated, appointments prepared for, and next steps kept organized, so important details do not get lost.</p>
+          <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;margin-top:var(--space-2)">
+            <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ heroCtaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+            <button onClick="{{ goServices }}" style="background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--teal-700);cursor:pointer">See how TLV can help
+              <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="arrow-right" size="22px" hint-size="22px,22px"></x-import></button>
+          </div>
+          <sc-if value="{{ showTrust }}" hint-placeholder-val="{{ true }}">
+          <div data-trust style="display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-5);align-items:center;padding-top:var(--space-4);border-top:1px solid var(--teal-200);width:100%;margin-top:var(--space-2)">
+            <span style="font:var(--text-small-role);color:var(--teal-800)">For seniors, adult children, and family caregivers</span>
+            <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
+            <span style="font:var(--text-small-role);color:var(--teal-800)">Independent support</span>
+            <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
+            <span style="font:var(--text-small-role);color:var(--teal-800)">In-person, virtual, and hybrid options</span>
+          </div>
+          </sc-if>
         </div>
-        <sc-if value="{{ showTrust }}" hint-placeholder-val="{{ true }}">
-        <div data-trust style="display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-5);align-items:center;padding-top:var(--space-4);border-top:1px solid var(--teal-100);width:100%;margin-top:var(--space-2)">
-          <span style="font:var(--text-small-role);color:var(--teal-700)">For seniors, adult children, and family caregivers</span>
-          <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
-          <span style="font:var(--text-small-role);color:var(--teal-700)">Independent support</span>
-          <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
-          <span style="font:var(--text-small-role);color:var(--teal-700)">In-person, virtual, and hybrid options</span>
-        </div>
-        </sc-if>
-      </div>
-      <div data-hero-photo style="position:relative;height:600px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-md)">
-        <img data-photo src="uploads/hero-image-1.jpg" alt="A daughter sitting with her mother, holding her hand" style="width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block">
       </div>
     </div>
   </section>
@@ -280,12 +404,12 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
     <div style="max-width:var(--container);margin:0 auto">
       <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Practical support</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Practical support</span>
         <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:24ch">What we actually do for your family</h2>
-        <p style="font:var(--text-lead);color:var(--text-muted);max-width:52ch">Whether you live nearby or in another city, we help you and your parent stay informed, prepared, and more confident about what comes next.</p>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:52ch">Whether you live nearby or in another city, we help you and your loved one stay informed, prepared, and more confident about what comes next.</p>
       </div>
       <div data-cols="4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-6)">
-        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="monitor-smartphone" title="Patient portals" hint-size="100%,300px">Set up portal access, fix notifications so alerts arrive, and teach your parent how to log in, read lab results, and message their care team.</x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="monitor-smartphone" title="Technology help" hint-size="100%,300px">Patient portals, logins, passwords, and notifications, set up and made to work. Then we sit with your loved one and teach them how to read lab results, book appointments, and message their care team on their own.</x-import>
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="notebook-pen" title="Appointment preparation" hint-size="100%,300px">Sit down before a major appointment, review labs and scans together, and write down the questions that need answering.</x-import>
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="folder-open" title="Records and information" hint-size="100%,300px">Organize records, keep the medication list accurate, and research reliable information so your family is working from the same page.</x-import>
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="list-checks" title="What happens next" hint-size="100%,300px">Track follow-up instructions, appointments, and next steps, so nothing important is missed after everyone leaves the room.</x-import>
@@ -293,16 +417,20 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section style="background:var(--surface-brand-deep);padding:var(--section-y) var(--space-7)">
-    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:var(--space-10);align-items:center">
-      <div data-ph="mid" style="position:relative;height:440px;border-radius:var(--radius-xl);overflow:hidden;background:var(--surface-mist)">
-        <img data-photo src="uploads/peace-of-mind.jpg" alt="A senior and her daughter looking at a tablet together at the kitchen table" style="width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block">
-      </div>
-      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Peace of mind</span>
-        <h2 style="font:var(--text-h2);color:var(--warm-0);max-width:22ch">Healthcare should not feel impossible to understand.</h2>
-        <p style="font:var(--text-lead);color:var(--teal-100);max-width:54ch">We work alongside seniors at their pace, helping them navigate online systems, prepare for appointments, review information in clear language, and build greater confidence managing their own healthcare.</p>
-        <p style="font:var(--text-body-role);color:var(--mint-300);max-width:48ch">You stay in charge of your own care. Bring a family member if you would like. As many times as you need.</p>
+  <section data-bleed-section style="position:relative;isolation:isolate;overflow:hidden;padding:0;background:linear-gradient(105deg,var(--teal-500) 0%,var(--teal-600) 42%,var(--teal-700) 100%)">
+    <div data-bleed-art>
+      <img data-photo src="uploads/peace-of-mind.jpg" alt="A senior and her daughter looking at a tablet together at the kitchen table" style="width:100%;height:100%;object-fit:cover;object-position:66% 45%;display:block">
+      <span data-bleed-veil></span>
+    </div>
+    <div data-bleed-wrap>
+      <div data-2col style="width:100%;display:grid;grid-template-columns:1fr minmax(0,min(540px,46vw));gap:var(--space-10);align-items:center">
+        <div></div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+          <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Peace of mind</span>
+          <h2 style="font:var(--text-h2);color:var(--warm-0)">Healthcare should not feel impossible to understand.</h2>
+          <p style="font:var(--text-lead);color:var(--teal-100)">We work alongside seniors at their pace, helping them learn the portals and devices their care now depends on, prepare for appointments, review information in clear language, and build real confidence managing their own healthcare.</p>
+          <p style="font:var(--text-body-role);color:var(--mint-300)">You stay in charge of your own care. Bring a family member if you would like. As many times as you need.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -310,7 +438,7 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
     <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--space-10)">
       <div style="display:flex;flex-direction:column;gap:var(--space-4)">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">What to expect</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">What to expect</span>
         <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:16ch">One clear path, from the first call onward</h2>
         <p style="font:var(--text-body-role);color:var(--text-muted);max-width:38ch">No cost, no obligation. You do not have to decide today.</p>
       </div>
@@ -325,12 +453,12 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section id="tlv-book-home" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+  <section id="tlv-book-home" data-heartmark style="color:var(--warm-0);background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
     <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
       <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Every family deserves a clearer path forward.</h2>
-      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
+      <p style="font:var(--text-lead);color:var(--teal-100);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
       <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
-      <p style="font:var(--text-small-role);color:var(--violet-50);opacity:.85">No cost, no obligation. A person answers.</p>
+      <p style="font:var(--text-small-role);color:var(--teal-100);opacity:.85">No cost, no obligation. A person answers.</p>
     </div>
   </section>
 
@@ -343,7 +471,7 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--gradient-calm);padding:var(--section-y-lg) var(--space-7) var(--section-y)">
     <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-10);align-items:center">
       <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">How TLV can help</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">How TLV can help</span>
         <h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:20ch">Support built around the problem in front of you.</h1>
         <p style="font:var(--text-lead);color:var(--text-muted);max-width:54ch">Every family arrives at a different point. Some need help logging in. Most want to understand what is happening and what the options are. We start where you are, and the support grows only as far as it needs to.</p>
         <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center">
@@ -378,7 +506,7 @@ a[data-plain]{text-decoration:none}
         <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg)">
           <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="users" size="28px" color="var(--brand)" hint-size="28px,28px"></x-import>
           <span style="font:var(--text-h5);color:var(--text-strong)">Hybrid</span>
-          <span style="font:var(--text-small-role);color:var(--text-muted)">We are in the room with your parent, you are on the call from wherever you are.</span>
+          <span style="font:var(--text-small-role);color:var(--text-muted)">We are in the room with your loved one, you are on the call from wherever you are.</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-accent-soft);border:1px solid var(--green-100);border-radius:var(--radius-lg)">
           <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="file-signature" size="28px" color="var(--green-600)" hint-size="28px,28px"></x-import>
@@ -392,13 +520,17 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
     <div style="max-width:var(--container);margin:0 auto">
       <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Packages</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Packages</span>
         <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:22ch">Each package builds on the one before it</h2>
-        <p style="font:var(--text-lead);color:var(--text-muted);max-width:56ch">Flat fees, agreed before anything starts. Prices are not listed here because the right package depends on what you are facing. We will walk you through the cost on your free call.</p>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:56ch">Flat fees, agreed before anything starts, with no hourly billing and no surprises. Each package includes everything in the one before it. We will help you work out which one fits on your free call.</p>
       </div>
       <div data-cols="3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6);margin-bottom:var(--space-6)">
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Getting set up" icon="monitor-smartphone" title="Educational" hint-size="100%,420px">
-          <p style="margin:0 0 var(--space-5)">For the family whose parent cannot get into the system at all.</p>
+          <p style="margin:0 0 var(--space-4);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1;letter-spacing:var(--tracking-tight);color:var(--teal-900)">$150</span>
+            <span style="font:var(--text-small-role);color:var(--text-muted)">flat fee</span>
+          </p>
+          <p style="margin:0 0 var(--space-5)">Technology help, start to finish, for the family whose loved one cannot get into the system at all.</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Portal login set up and working</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Notifications fixed so alerts actually arrive</span></li>
@@ -408,16 +540,24 @@ a[data-plain]{text-decoration:none}
           </ul>
         </x-import>
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" accent="1" eyebrow="Appointment support" icon="users" title="Premium" footer="{{ mostFamilies }}" hint-size="100%,420px">
+          <p style="margin:0 0 var(--space-4);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1;letter-spacing:var(--tracking-tight);color:var(--teal-900)">$300</span>
+            <span style="font:var(--text-small-role);color:var(--text-muted)">flat fee</span>
+          </p>
           <p style="margin:0 0 var(--space-5)">For the family who needs to know what is wrong and what the options are.</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Educational</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>A visit before the appointment to review labs and scans and write down questions</span></li>
-            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>An advocate in the exam room taking notes, so your parent can listen</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>An advocate in the exam room taking notes, so your loved one can listen</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>A debrief afterwards, in plain language, while it is still fresh</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>How to use the care team and how to request a second opinion</span></li>
           </ul>
         </x-import>
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Surgery preparation" icon="clipboard-check" title="Specialty — surgical" hint-size="100%,420px">
+          <p style="margin:0 0 var(--space-4);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1;letter-spacing:var(--tracking-tight);color:var(--teal-900)">$400</span>
+            <span style="font:var(--text-small-role);color:var(--text-muted)">flat fee</span>
+          </p>
           <p style="margin:0 0 var(--space-5)">For the family facing a major operation.</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Premium</span></li>
@@ -430,16 +570,24 @@ a[data-plain]{text-decoration:none}
       </div>
       <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6)">
         <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Cancer diagnosis support" icon="route" title="Specialty — cancer" hint-size="100%,380px">
+          <p style="margin:0 0 var(--space-4);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1;letter-spacing:var(--tracking-tight);color:var(--teal-900)">$500</span>
+            <span style="font:var(--text-small-role);color:var(--text-muted)">flat fee</span>
+          </p>
           <p style="margin:0 0 var(--space-5)">For the family working through a complex cancer diagnosis and a long treatment plan.</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Specialty — surgical</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>The treatment timeline mapped out, step by step</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Radiation, chemotherapy and surgery explained in clear language, including the difference between the options you were given</span></li>
-            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Side effects tracked, so your parent knows what to report and when</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Side effects tracked, so your loved one knows what to report and when</span></li>
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Reliable published research gathered into questions for the specialist</span></li>
           </ul>
         </x-import>
         <div data-deep-card style="display:flex"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" tone="deep" eyebrow="Ongoing" icon="calendar-days" title="Monthly care retainer" hint-size="100%,380px">
+          <p style="margin:0 0 var(--space-4);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1;letter-spacing:var(--tracking-tight);color:var(--warm-0)">$600</span>
+            <span style="font:var(--text-small-role);color:var(--mint-300)">per month, cancel anytime</span>
+          </p>
           <p style="margin:0 0 var(--space-5)">For families who want someone watching the chart every week, not only around appointments.</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
             <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>Everything in Specialty — surgical</span></li>
@@ -453,10 +601,10 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section style="background:var(--surface-violet);padding:var(--space-11) var(--space-7)">
+  <section data-heartmark style="color:var(--warm-0);background:var(--teal-700);padding:var(--space-11) var(--space-7)">
     <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start">
       <h2 style="font:var(--text-h3);color:var(--warm-0)">The goal is not to add another layer of complexity. It is to create clarity.</h2>
-      <p style="font:var(--text-body-role);color:var(--violet-50)">Families know what has happened, what needs attention, and what questions to ask next. Seniors feel heard, supported, and more involved in their own healthcare journey.</p>
+      <p style="font:var(--text-body-role);color:var(--warm-0)">Families know what has happened, what needs attention, and what questions to ask next. Seniors feel heard, supported, and more involved in their own healthcare journey.</p>
     </div>
   </section>
 
@@ -464,7 +612,7 @@ a[data-plain]{text-decoration:none}
     <div data-split style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:660px 1fr;gap:var(--space-10);align-items:start">
       <div style="display:flex;flex-direction:column;gap:var(--space-8);align-items:flex-start">
         <div style="display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start">
-          <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">FAQ</span>
+          <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">FAQ</span>
           <h2 style="font:var(--text-h2);color:var(--text-strong)">We are educators, researchers, advocates, and logistics guides.</h2>
           <p style="font:var(--text-lead);color:var(--text-body)">We do not diagnose conditions, prescribe medication, or advise which treatment to choose. What we can do is explain what you were told, gather reliable information, help you write the questions, and make sure the next steps are organized.</p>
           <p style="font:var(--text-lead);font-style:italic;color:var(--teal-700)">Medical decisions remain between the client and their licensed healthcare professionals.</p>
@@ -495,10 +643,10 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section id="tlv-book-services" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+  <section id="tlv-book-services" data-heartmark style="color:var(--warm-0);background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
     <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
       <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Let's talk about what your family needs.</h2>
-      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">Thirty minutes, no cost, no obligation. By the end of the call you will know the clearest next step, whether or not it involves TLV.</p>
+      <p style="font:var(--text-lead);color:var(--teal-100);max-width:50ch">Thirty minutes, no cost, no obligation. By the end of the call you will know the clearest next step, whether or not it involves TLV.</p>
       <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
     </div>
   </section>
@@ -512,7 +660,7 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--gradient-calm);padding:var(--section-y-lg) var(--space-7) var(--section-y)">
     <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-10);align-items:center">
       <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Meet Terry</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Meet Terry</span>
         <h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:20ch">Professional healthcare experience. Personal understanding. Practical support for families.</h1>
         <p style="font:var(--text-lead);color:var(--text-muted);max-width:54ch">I created TLV Patient Care to help seniors and their families navigate difficult diagnoses, online healthcare systems, and important next steps with greater clarity and confidence.</p>
         <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center">
@@ -555,11 +703,11 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section style="background:var(--surface-violet);padding:var(--section-y) var(--space-7)">
+  <section data-heartmark style="color:var(--warm-0);background:linear-gradient(150deg,var(--teal-600) 0%,var(--teal-800) 100%);padding:var(--section-y) var(--space-7)">
     <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
       <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="quote" size="40px" color="var(--green-300)" hint-size="40px,40px"></x-import>
       <p style="font:var(--text-h3);font-family:var(--font-display);color:var(--warm-0);text-wrap:balance">My goal is not to take over a client's healthcare forever. My goal is to help people feel more informed, more prepared, and more confident managing their own healthcare and communicating with their care team.</p>
-      <span style="font:var(--text-small-role);color:var(--violet-50);letter-spacing:var(--tracking-caps);text-transform:uppercase">Terry Vincent, founder</span>
+      <span style="font:var(--text-small-role);color:var(--warm-0);letter-spacing:var(--tracking-caps);text-transform:uppercase">Terry Vincent, founder</span>
     </div>
   </section>
 
@@ -581,7 +729,7 @@ a[data-plain]{text-decoration:none}
   <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
     <div style="max-width:var(--container);margin:0 auto">
       <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Credentials and relevant experience</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Credentials and relevant experience</span>
         <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:22ch">Twenty-three years in healthcare, and a lifetime of caregiving</h2>
       </div>
       <ul data-2col style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4) var(--space-9)">
@@ -597,10 +745,10 @@ a[data-plain]{text-decoration:none}
     </div>
   </section>
 
-  <section id="tlv-book-about" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+  <section id="tlv-book-about" data-heartmark style="color:var(--warm-0);background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
     <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
       <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Every family deserves a clearer path forward.</h2>
-      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
+      <p style="font:var(--text-lead);color:var(--teal-100);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
       <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
     </div>
   </section>
@@ -615,7 +763,7 @@ a[data-plain]{text-decoration:none}
 
     <div data-modal-head style="display:flex;align-items:flex-start;gap:var(--space-5);padding:var(--space-7) var(--space-8) var(--space-5)">
       <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Free consultation · 30 minutes</span>
+        <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Free consultation · 30 minutes</span>
         <h2 style="font:var(--text-h3);color:var(--text-strong)">{{ stepTitle }}</h2>
         <p style="font:var(--text-body-role);color:var(--text-muted);max-width:56ch">{{ stepBlurb }}</p>
       </div>
@@ -769,18 +917,18 @@ a[data-plain]{text-decoration:none}
 <footer style="background:var(--surface-brand-deep);color:var(--teal-100);padding:var(--space-11) var(--space-7) var(--space-8)">
   <div data-foot style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:var(--space-9)">
     <div style="display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start">
-      <img data-logo-full src="assets/logo/on-dark/logo-primary.png" alt="TLV Patient Care Consultants" style="width:242px;max-width:100%;height:auto">
+      <img data-logo-full src="assets/logo/on-dark/logo-llc.png" alt="TLV Patient Care Consultants LLC" width="1032" height="336" style="width:262px;max-width:100%;height:auto">
       <img data-logo-mark src="assets/logo/on-dark/logo-mark.png" alt="TLV Patient Care Consultants" width="1400" height="965" style="width:93px;max-width:100%;height:auto">
       <p style="font:var(--text-body-role);color:var(--teal-100);max-width:34ch">Independent patient advocacy and healthcare navigation for seniors and the families supporting them.</p>
     </div>
     <div data-foot-pages style="display:flex;flex-direction:column;gap:var(--space-1);align-items:flex-start">
-      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300);margin-bottom:var(--space-2)">Pages</span>
+      <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300);margin-bottom:var(--space-2)">Pages</span>
       <button onClick="{{ goHome }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">Home</button>
       <button onClick="{{ goServices }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">Services</button>
       <button onClick="{{ goAbout }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">About</button>
     </div>
     <div data-foot-packages style="display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start">
-      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Packages</span>
+      <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Packages</span>
       <span style="font:var(--text-body-role);color:var(--teal-100)">Educational</span>
       <span style="font:var(--text-body-role);color:var(--teal-100)">Premium</span>
       <span style="font:var(--text-body-role);color:var(--teal-100)">Specialty — surgical</span>
@@ -788,7 +936,7 @@ a[data-plain]{text-decoration:none}
       <span style="font:var(--text-body-role);color:var(--teal-100)">Monthly care retainer</span>
     </div>
     <div style="display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start">
-      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Get in touch</span>
+      <span data-eyebrow style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Get in touch</span>
       <span style="font:var(--text-body-role);color:var(--teal-100)">(555) 012-8834</span>
       <span style="font:var(--text-body-role);color:var(--teal-100)">tlvpatientadvocate@gmail.com</span>
       <span style="font:var(--text-small-role);color:var(--mint-300)">A person answers.</span>
@@ -811,6 +959,53 @@ class Component extends DCLogic {
   hashPage(){
     const h = (window.location.hash || '').replace('#','');
     return ['home','services','about'].includes(h) ? h : null;
+  }
+
+  /* The design system's Icon builds its CSS mask from a jsDelivr URL, inline,
+     inside the component — so Button, Card, Badge and Steps all inherit it and
+     none of them can be reached with a prop or a stylesheet. When that URL does
+     not load, an unresolved mask paints the element as a solid block, which is
+     what every glyph on the page was doing. This rewrites the mask to the 42
+     glyphs vendored in assets/icons/, so the site carries its own iconography
+     and works offline. Glyphs outside the vendored set map to the nearest one. */
+  static ICON_CDN = 'https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/';
+  static ICON_SWAP = {
+    'calendar-check':'calendar-days', 'monitor-smartphone':'lightbulb', 'home':'map-pin',
+    'users':'users-round', 'file-signature':'file-text', 'folder-open':'clipboard-list',
+    'route':'clock', 'clipboard-check':'clipboard-list', 'graduation-cap':'book-open',
+    'award':'star', 'building-2':'hospital', 'activity':'stethoscope',
+    'house-heart':'heart', 'briefcase':'file-text', 'hand-heart':'heart-handshake',
+    'chevron-left':'arrow-left', 'phone-call':'phone', 'circle-alert':'triangle-alert'
+  };
+  /* The glyphs themselves, inlined. A relative URL inside a CSS mask does not
+     resolve in every host the way an <img src> does, so the artwork travels in
+     the file rather than being fetched at all. */
+  static ICONS = {"arrow-left":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m12%2019-7-7%207-7%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M19%2012H5%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","arrow-right":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M5%2012h14%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m12%205%207%207-7%207%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","book-open":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M12%205v16%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M20.001%2019A2%202%200%200022%2017V5a2%202%200%2000-1.999-2L16%203.002A5%205%200%200012%205a5%205%200%2000-4-2H4a2%202%200%2000-2%202v12a2%202%200%20001.999%202H8a5%205%200%20014%202%205%205%200%20014-2z%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","calendar-days":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M8%202v3%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M16%202v3%22%3E%3C%2Fpath%3E%20%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2218%22%20height%3D%2218%22%20rx%3D%222%22%3E%3C%2Frect%3E%20%3Cpath%20d%3D%22M3%209h18%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M8%2013h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2013h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M16%2013h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M8%2017h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2017h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M16%2017h.01%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","check":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M20%206%209%2017l-5-5%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","chevron-down":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m6%209%206%206%206-6%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","chevron-right":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m9%2018%206-6-6-6%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","circle-check":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22m9%2012%202%202%204-4%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","circle-question-mark":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22M9.09%209a3%203%200%200%201%205.83%201c0%202-3%203-3%203%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2017h.01%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","clipboard-list":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Crect%20width%3D%228%22%20height%3D%224%22%20x%3D%228%22%20y%3D%222%22%20rx%3D%221%22%20ry%3D%221%22%3E%3C%2Frect%3E%20%3Cpath%20d%3D%22M16%204h2a2%202%200%200%201%202%202v14a2%202%200%200%201-2%202H6a2%202%200%200%201-2-2V6a2%202%200%200%201%202-2h2%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2011h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2016h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M8%2011h.01%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M8%2016h.01%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","clock":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22M12%206v6l4%202%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","download":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M12%2015V3%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M21%2015v4a2%202%200%200%201-2%202H5a2%202%200%200%201-2-2v-4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m7%2010%205%205%205-5%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","external-link":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%203h6v6%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M10%2014%2021%203%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M18%2013v6a2%202%200%200%201-2%202H5a2%202%200%200%201-2-2V8a2%202%200%200%201%202-2h6%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","file-text":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M6%2022a2%202%200%200%201-2-2V4a2%202%200%200%201%202-2h8a2.4%202.4%200%200%201%201.704.706l3.588%203.588A2.4%202.4%200%200%201%2020%208v12a2%202%200%200%201-2%202z%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M14%202v5a1%201%200%200%200%201%201h5%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M10%209H8%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M16%2013H8%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M16%2017H8%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","heart-handshake":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M19.414%2014.414C21%2012.828%2022%2011.5%2022%209.5a5.5%205.5%200%200%200-9.591-3.676.6.6%200%200%201-.818.001A5.5%205.5%200%200%200%202%209.5c0%202.3%201.5%204%203%205.5l5.535%205.362a2%202%200%200%200%202.879.052%202.12%202.12%200%200%200-.004-3%202.124%202.124%200%201%200%203-3%202.124%202.124%200%200%200%203.004%200%202%202%200%200%200%200-2.828l-1.881-1.882a2.41%202.41%200%200%200-3.409%200l-1.71%201.71a2%202%200%200%201-2.828%200%202%202%200%200%201%200-2.828l2.823-2.762%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","heart":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M2%209.5a5.5%205.5%200%200%201%209.591-3.676.56.56%200%200%200%20.818%200A5.49%205.49%200%200%201%2022%209.5c0%202.29-1.5%204-3%205.5l-5.492%205.313a2%202%200%200%201-3%20.019L5%2015c-1.5-1.5-3-3.2-3-5.5%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","hospital":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M12%207v4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M14%2021v-3a2%202%200%200%200-4%200v3%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M14%209h-4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M18%2011h2a2%202%200%200%201%202%202v6a2%202%200%200%201-2%202H4a2%202%200%200%201-2-2v-9a2%202%200%200%201%202-2h2%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M18%2021V5a2%202%200%200%200-2-2H8a2%202%200%200%200-2%202v16%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","info":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22M12%2016v-4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%208h.01%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","lightbulb":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2014c.2-1%20.7-1.7%201.5-2.5%201-.9%201.5-2.2%201.5-3.5A6%206%200%200%200%206%208c0%201%20.2%202.2%201.5%203.5.7.7%201.3%201.5%201.5%202.5%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M9%2018h6%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M10%2022h4%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","list-checks":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M13%205h8%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M13%2012h8%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M13%2019h8%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m3%2017%202%202%204-4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m3%207%202%202%204-4%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","lock":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Crect%20width%3D%2218%22%20height%3D%2211%22%20x%3D%223%22%20y%3D%2211%22%20rx%3D%222%22%20ry%3D%222%22%3E%3C%2Frect%3E%20%3Cpath%20d%3D%22M7%2011V7a5%205%200%200%201%2010%200v4%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","mail":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m22%207-8.991%205.727a2%202%200%200%201-2.009%200L2%207%22%3E%3C%2Fpath%3E%20%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%2220%22%20height%3D%2216%22%20rx%3D%222%22%3E%3C%2Frect%3E%20%3C%2Fsvg%3E","map-pin":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M20%2010c0%204.993-5.539%2010.193-7.399%2011.799a1%201%200%200%201-1.202%200C9.539%2020.193%204%2014.993%204%2010a8%208%200%200%201%2016%200%22%3E%3C%2Fpath%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%223%22%3E%3C%2Fcircle%3E%20%3C%2Fsvg%3E","menu":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M4%205h16%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M4%2012h16%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M4%2019h16%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","messages-square":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M16%2010a2%202%200%200%201-2%202H6.828a2%202%200%200%200-1.414.586l-2.202%202.202A.71.71%200%200%201%202%2014.286V4a2%202%200%200%201%202-2h10a2%202%200%200%201%202%202z%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M20%209a2%202%200%200%201%202%202v10.286a.71.71%200%200%201-1.212.502l-2.202-2.202A2%202%200%200%200%2017.172%2019H10a2%202%200%200%201-2-2v-1%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","minus":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M5%2012h14%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","notebook-pen":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M13.4%202H6a2%202%200%200%200-2%202v16a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2v-7.4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M2%206h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M2%2010h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M2%2014h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M2%2018h4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M21.378%205.626a1%201%200%201%200-3.004-3.004l-5.01%205.012a2%202%200%200%200-.506.854l-.837%202.87a.5.5%200%200%200%20.62.62l2.87-.837a2%202%200%200%200%20.854-.506z%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","phone":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M13.832%2016.568a1%201%200%200%200%201.213-.303l.355-.465A2%202%200%200%201%2017%2015h3a2%202%200%200%201%202%202v3a2%202%200%200%201-2%202A18%2018%200%200%201%202%204a2%202%200%200%201%202-2h3a2%202%200%200%201%202%202v3a2%202%200%200%201-.8%201.6l-.468.351a1%201%200%200%200-.292%201.233%2014%2014%200%200%200%206.392%206.384%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","pill":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m10.5%2020.5%2010-10a4.95%204.95%200%201%200-7-7l-10%2010a4.95%204.95%200%201%200%207%207Z%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m8.5%208.5%207%207%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","play":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M5%205a2%202%200%200%201%203.008-1.728l11.997%206.998a2%202%200%200%201%20.003%203.458l-12%207A2%202%200%200%201%205%2019z%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","plus":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M5%2012h14%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%205v14%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","printer":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M6%2018H4a2%202%200%200%201-2-2v-5a2%202%200%200%201%202-2h16a2%202%200%200%201%202%202v5a2%202%200%200%201-2%202h-2%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M6%209V3a1%201%200%200%201%201-1h10a1%201%200%200%201%201%201v6%22%3E%3C%2Fpath%3E%20%3Crect%20x%3D%226%22%20y%3D%2214%22%20width%3D%2212%22%20height%3D%228%22%20rx%3D%221%22%3E%3C%2Frect%3E%20%3C%2Fsvg%3E","quote":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M16%203a2%202%200%200%200-2%202v6a2%202%200%200%200%202%202%201%201%200%200%201%201%201v1a2%202%200%200%201-2%202%201%201%200%200%200-1%201v2a1%201%200%200%200%201%201%206%206%200%200%200%206-6V5a2%202%200%200%200-2-2z%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M5%203a2%202%200%200%200-2%202v6a2%202%200%200%200%202%202%201%201%200%200%201%201%201v1a2%202%200%200%201-2%202%201%201%200%200%200-1%201v2a1%201%200%200%200%201%201%206%206%200%200%200%206-6V5a2%202%200%200%200-2-2z%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","search":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m21%2021-4.34-4.34%22%3E%3C%2Fpath%3E%20%3Ccircle%20cx%3D%2211%22%20cy%3D%2211%22%20r%3D%228%22%3E%3C%2Fcircle%3E%20%3C%2Fsvg%3E","shield-check":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M20%2013c0%205-3.5%207.5-7.66%208.95a1%201%200%200%201-.67-.01C7.5%2020.5%204%2018%204%2013V6a1%201%200%200%201%201-1c2%200%204.5-1.2%206.24-2.72a1.17%201.17%200%200%201%201.52%200C14.51%203.81%2017%205%2019%205a1%201%200%200%201%201%201z%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m9%2012%202%202%204-4%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","star":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M11.525%202.295a.53.53%200%200%201%20.95%200l2.31%204.679a2.123%202.123%200%200%200%201.595%201.16l5.166.756a.53.53%200%200%201%20.294.904l-3.736%203.638a2.123%202.123%200%200%200-.611%201.878l.882%205.14a.53.53%200%200%201-.771.56l-4.618-2.428a2.122%202.122%200%200%200-1.973%200L6.396%2021.01a.53.53%200%200%201-.77-.56l.881-5.139a2.122%202.122%200%200%200-.611-1.879L2.16%209.795a.53.53%200%200%201%20.294-.906l5.165-.755a2.122%202.122%200%200%200%201.597-1.16z%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","stethoscope":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M11%202v2%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M5%202v2%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M5%203H4a2%202%200%200%200-2%202v4a6%206%200%200%200%2012%200V5a2%202%200%200%200-2-2h-1%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M8%2015a6%206%200%200%200%2012%200v-3%22%3E%3C%2Fpath%3E%20%3Ccircle%20cx%3D%2220%22%20cy%3D%2210%22%20r%3D%222%22%3E%3C%2Fcircle%3E%20%3C%2Fsvg%3E","triangle-alert":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m21.73%2018-8-14a2%202%200%200%200-3.48%200l-8%2014A2%202%200%200%200%204%2021h16a2%202%200%200%200%201.73-3%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%209v4%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22M12%2017h.01%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","user-round":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Ccircle%20cx%3D%2212%22%20cy%3D%228%22%20r%3D%225%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22M20%2021a8%208%200%200%200-16%200%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","users-round":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M18%2021a8%208%200%200%200-16%200%22%3E%3C%2Fpath%3E%20%3Ccircle%20cx%3D%2210%22%20cy%3D%228%22%20r%3D%225%22%3E%3C%2Fcircle%3E%20%3Cpath%20d%3D%22M22%2020c0-3.37-2-6.5-4-8a5%205%200%200%200-.45-8.3%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E","video":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22m16%2013%205.223%203.482a.5.5%200%200%200%20.777-.416V7.87a.5.5%200%200%200-.752-.432L16%2010.5%22%3E%3C%2Fpath%3E%20%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%2214%22%20height%3D%2212%22%20rx%3D%222%22%3E%3C%2Frect%3E%20%3C%2Fsvg%3E","x":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M18%206%206%2018%22%3E%3C%2Fpath%3E%20%3Cpath%20d%3D%22m6%206%2012%2012%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E"};
+
+  localizeIcons = () => {
+    const CDN = Component.ICON_CDN;
+    for(const el of document.querySelectorAll('[style*="lucide-static"]')){
+      const cur = el.style.webkitMaskImage || el.style.maskImage;
+      if(!cur || cur.indexOf(CDN) < 0) continue;
+      const name = (cur.match(/icons\/([a-z0-9-]+)\.svg/) || [])[1];
+      if(!name) continue;
+      const glyph = Component.ICONS[Component.ICON_SWAP[name] || name] || Component.ICONS[name];
+      if(!glyph) continue;
+      const url = 'url("' + glyph + '")';
+      el.style.webkitMaskImage = url;
+      el.style.maskImage = url;
+    }
+  };
+
+  watchIcons(){
+    if(this._iconMo) return;
+    let queued = false;
+    this._iconMo = new MutationObserver(() => {
+      if(queued) return;
+      queued = true;
+      setTimeout(() => { queued = false; this.localizeIcons(); }, 0);
+    });
+    this._iconMo.observe(document.body, {childList:true, subtree:true, attributeFilter:['style']});
   }
 
   toggleMenu = () => this.setState(s => ({menuOpen: !s.menuOpen}));
@@ -979,9 +1174,9 @@ class Component extends DCLogic {
     return [
           {q:'Do you make medical decisions for us?', a:'No. We do not diagnose, prescribe, or tell you which treatment to choose. We explain the information you have been given, help you prepare the questions, and keep the next steps organized. The decisions stay with your family and your licensed healthcare professionals.'},
           {q:'Are you connected to a hospital or insurer?', a:'No. TLV Patient Care is independent from hospitals, medical facilities, and insurance companies. Our responsibility is to the client and family we are supporting.'},
-          {q:'What does it cost?', a:'Each package is a flat fee, agreed before anything begins, with a monthly option for ongoing support. Prices are not listed here because the right package depends on what you are facing. We will walk you through it on your free call.'},
-          {q:'Can you help if I live in another city?', a:'Yes. Many families work this way. Your advocate can be in the room with your parent while you join by phone or video, and follows up with you directly afterwards.'},
-          {q:'How do you get access to my parent\u2019s records?', a:'Through a signed written proxy. It names your advocate specifically, and your parent can withdraw it at any time.'},
+          {q:'What does it cost?', a:'Packages run from $150 for technology help through to $500 for cancer diagnosis support, each a flat fee agreed before anything begins. Ongoing support is $600 a month and can be cancelled whenever you no longer need it. Insurance does not cover it, so the price you see is the price you pay.'},
+          {q:'Can you help if I live in another city?', a:'Yes. Many families work this way. Your advocate can be in the room with your loved one while you join by phone or video, and follows up with you directly afterwards.'},
+          {q:'How do you get access to my loved one\u2019s records?', a:'Through a signed written proxy. It names your advocate specifically, and your loved one can withdraw it at any time.'},
           {q:'Does insurance cover this?', a:'No. We are a private service and do not bill insurance.'}
         ];
   }
@@ -1016,11 +1211,24 @@ class Component extends DCLogic {
          pill's rounded caps, which is what pushed violet onto the teal end and
          teal onto the violet end, and a transparent border let the fill bleed
          under it. */
-      style: {background:'linear-gradient(to right,var(--teal-500) 0%,var(--violet-500) 100%)',
+      style: {background:'linear-gradient(to right,var(--teal-600) 0%,var(--green-600) 100%)',
         backgroundClip:'padding-box', color:'var(--warm-0)', border:'none',
         filter: on ? 'saturate(1.12) brightness(.94)' : 'none'},
       onMouseEnter: () => this.setState({headerHover:true}),
       onMouseLeave: () => this.setState({headerHover:false})
+    };
+  }
+
+  /* Hero CTA: Burnt Orange, the palette's designated contrast action. It is
+     the one warm-dark note on a bright wash, so it carries without shouting. */
+  heroCtaProps(){
+    const on = this.state.heroHover;
+    return {
+      style: {background: on ? 'var(--cta-hover)' : 'var(--cta)', color:'var(--cta-on)',
+        border:'none', boxShadow: on ? 'var(--shadow-md)' : 'var(--shadow-sm)',
+        fontWeight:700, transition:'background .18s ease, box-shadow .22s ease'},
+      onMouseEnter: () => this.setState({heroHover:true}),
+      onMouseLeave: () => this.setState({heroHover:false})
     };
   }
 
@@ -1050,6 +1258,8 @@ class Component extends DCLogic {
       this._scroll();
     }
     if(this._ctaFor !== this.page){ this._ctaFor = this.page; this.watchHeroCta(); }
+    this.localizeIcons();
+    this.watchIcons();
     if(!this._hash){
       this._hash = () => { const p = this.hashPage(); if(p) this.setState({page:p}); };
       window.addEventListener('hashchange', this._hash);
@@ -1069,6 +1279,7 @@ class Component extends DCLogic {
      frame so the shell paints promptly. */
   componentWillUnmount(){
     if(this._scroll){ window.removeEventListener('scroll', this._scroll); window.removeEventListener('resize', this._scroll); }
+    if(this._iconMo) this._iconMo.disconnect();
     if(this._ctaIo) this._ctaIo.disconnect();
     clearTimeout(this._ctaRetry);
     if(this._hash) window.removeEventListener('hashchange', this._hash);
@@ -1151,6 +1362,7 @@ class Component extends DCLogic {
       showFaq: this.props.showFaq !== false,
       stepCurrent: 0,
       ctaProps: this.ctaProps(),
+      heroCtaProps: this.heroCtaProps(),
       headerCtaProps: this.headerCtaProps(),
       faqRows: this.faqRows(),
       faqWidth: {width:'100%'},
@@ -1159,9 +1371,9 @@ class Component extends DCLogic {
       steps: [
         {label:'A free 30-minute call', note:'Tell us what has happened. We will explain what we can help with and what we cannot.'},
         {label:'A written access proxy', note:'You sign a proxy that lets us see the record. Nothing happens before that.'},
-        {label:'The first working session', note:'Portals, records and the medication list, sorted out at your parent\u2019s pace.'},
+        {label:'The first working session', note:'Portals, records and the medication list, sorted out at your loved one\u2019s pace.'},
         {label:'Before the appointment', note:'Labs and scans reviewed together, and the questions written down.'},
-        {label:'In the room, and afterwards', note:'We take the notes so your parent can listen, then explain it again in plain language.'}
+        {label:'In the room, and afterwards', note:'We take the notes so your loved one can listen, then explain it again in plain language.'}
       ]
     };
   }
