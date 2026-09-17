@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<script>if(!location.hash) location.hash = "proxy-form";</script><body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/colors.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/typography.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/motion.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/tokens/base.css">
+<link rel="stylesheet" href="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/styles.css">
+<script src="_ds/tlv-patient-care-design-system-158230d2-6289-45cf-b8f3-86c5a68033bf/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+/* Gilroy — the display face, per the current brand guide. The bundled _ds copy
+   still declares the earlier placeholder, so the family and the token are
+   overridden here. Fontspring EULA: assets/fonts/gilroy/License.txt — generate
+   WOFF2 under a webfont license before production. */
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Gilroy';src:url('assets/fonts/gilroy/Gilroy-ExtraBold.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+:root{--font-display:'Gilroy',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+img{height:auto}
+html,body{overflow-x:clip;max-width:100%}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font:var(--text-body-role);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+/* Gilroy sets normal word spaces, so the corrective tracking the previous
+   display face needed is gone. Leading stays a touch tighter than stock. */
+:root{--leading-tight:1.04;--leading-snug:1.16}
+/* Palette refresh, matching the live site's current tokens: teal now runs
+   into a lighter sky blue, green/mint/aqua/violet-position warm into olive,
+   gold and coral, and the CTA is a warm terracotta rather than eggplant. The
+   three gradients are rebuilt from those same steps. */
+:root{
+  --teal-300:#78B6DA; --teal-900:#173F4A;
+  --green-300:#B7D36B; --green-400:#6FB98A;
+  --violet-300:#F27F87; --violet-400:#e46670; --violet-500:#bb3c48;
+  --mint-300:#FFD88A; --aqua-300:#F7A35C;
+  --cta:#C94F24; --cta-hover:#A9441F; --cta-active:#8a3819;
+  --gradient-hope:linear-gradient(90deg,#B7D36B 0%,#6FB98A 26%,#5FAFB4 48%,#78B6DA 70%,#238C9B 88%,#F27F87 100%);
+  --gradient-dusk:linear-gradient(150deg,var(--teal-600) 0%,var(--teal-800) 48%,var(--teal-900) 100%);
+}
+/* Tighter section rhythm than stock — the pages read as one continuous
+   argument rather than a stack of separated panels. */
+:root{--section-y:72px;--section-y-lg:88px}
+
+/* Focus — audience is 65+, so the ring is thick and high-contrast */
+:focus-visible{outline:3px solid var(--teal-600);outline-offset:3px;border-radius:6px}
+
+/* ---- Motion. Fades and short travel only, 140/220/320ms, no bounce. ---- */
+/* Modal glyphs use the design system's mask technique inline rather than a
+   component mount: each async mount was landing in the dialog's first commit
+   and starving the frame its entrance animation waits on. */
+[data-icon]{display:inline-block;flex:none;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+
+/* Reversed-tone cards: the bundled Icon paints its glyph as a mask over a
+   background color that never lands on dark tones, so the tile renders empty.
+   Restore the fill the design system asks for. */
+[data-deep-card] span:first-child > span{background-color:var(--green-300)!important}
+
+/* Modal: fade the scrim, lift the panel, cross-fade each step */
+/* A keyframe entrance cannot start until the dialog's subtree has settled —
+   its async component mounts leave the animation pending for most of a second,
+   so it snaps rather than eases. A transition has no such dependency: it fires
+   whenever the property changes, one frame after mount. */
+
+@keyframes tlvFadeIn{from{transform:translateY(6px)}to{transform:none}}
+[data-step]{animation:tlvFadeIn .28s cubic-bezier(.2,.8,.3,1) both}
+
+/* Accordion: grid-rows 0fr → 1fr is the one technique that animates
+   auto-height content without measuring it. */
+[data-faq-panel]{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.2,.8,.3,1)}
+[data-faq-panel][data-open]{grid-template-rows:1fr}
+[data-faq-panel] > div{overflow:hidden;min-height:0}
+[data-faq-row]{transition:border-color .22s ease,box-shadow .22s ease,background .22s ease}
+[data-faq-q] svg,[data-faq-chevron]{transition:transform .32s cubic-bezier(.2,.8,.3,1)}
+
+/* ---- Home hero ----
+   The photograph is a full-bleed layer pinned to the right edge of the
+   VIEWPORT, not a card inside the grid: it is masked so its left side
+   dissolves into the section wash, and veiled at top and bottom so it
+   meets the header and the next section without a seam. The section's own
+   wash is built from palette tints that echo the picture — teal cardigan,
+   violet sweater, a green note for hope. */
+[data-hero-wrap]{position:relative;z-index:1;max-width:var(--container);margin:0 auto;
+  padding:clamp(72px,8vw,116px) var(--space-7);min-height:clamp(560px,72vh,720px);
+  display:flex;align-items:center}
+[data-hero-art]{position:absolute;top:0;bottom:0;right:0;z-index:0;
+  width:clamp(560px,60vw,1280px);
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.34) 38%,rgba(0,0,0,.82) 58%,rgba(0,0,0,1) 76%)}
+/* Shifted right so the senior clears the transparent edge of the mask. The
+   gap this opens on the left sits inside the fully masked zone, so it never
+   shows; only background at the far right is cropped away. */
+[data-hero-art] img{filter:saturate(1.04);transform:translateX(20%)}
+[data-hero-veil]{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(248,247,244,.55) 0%,rgba(248,247,244,0) 16%,rgba(243,248,234,0) 74%,var(--green-50) 100%)}
+[data-hero-h1]{font-family:var(--font-display);font-weight:700;
+  font-size:clamp(40px,4.4vw,62px);line-height:1.03;letter-spacing:var(--tracking-tight)}
+
+/* Photographs settle in rather than snapping */
+[data-photo]{transition:transform .6s cubic-bezier(.2,.8,.3,1)}
+[data-photo]:hover{transform:scale(1.02)}
+
+/* ============================ RESPONSIVE ============================
+   Every column count in this file is fixed, so each one is tagged and
+   stepped down explicitly. Images only ever change their BOX — the art
+   is cropped with object-fit, never scaled to fit. */
+
+/* Two logo lockups, one shown at a time. Definite widths, so the flex parent
+   never sizes to the intrinsic 1400px. */
+[data-logo-full]{display:block!important}
+[data-logo-mark]{display:none!important}
+[data-lbl-sm]{display:none}
+
+/* These three are open/closed STATE, so their transform, opacity and
+   visibility are live values from renderVals — an attribute-driven CSS rule
+   is not reliable here, because React rewrites the element's attributes on
+   every re-render. CSS keeps only what depends on the viewport. */
+[data-burger]{display:none}
+[data-menu]{display:none}
+[data-stickycta]{display:none}
+[data-stickycta] button{width:100%;justify-content:center}
+
+@media (max-width:1180px){
+  /* Narrower panel here, so a 20% shift would crowd the daughter against the
+     viewport edge. Less travel, same intent. */
+  main [data-hero-art] img{transform:translateX(12%)}
+  main [data-cols="4"]{grid-template-columns:1fr 1fr!important}
+  main [data-cols="3"]{grid-template-columns:1fr 1fr!important}
+  main [data-split]{grid-template-columns:1fr .8fr!important}
+}
+
+/* ---- Tablet: everything becomes one column ---- */
+@media (max-width:900px){
+  main [data-cols],main [data-split],main [data-2col]{grid-template-columns:1fr!important}
+  main [data-sticky]{position:static!important}
+  main section{padding-inline:var(--space-5)!important}
+  main h1{font-size:clamp(36px,6.4vw,54px)!important}
+  main h2{font-size:clamp(28px,5vw,40px)!important}
+  main [data-hero]{gap:var(--space-8)!important}
+  footer [data-foot]{grid-template-columns:1fr 1fr!important;gap:var(--space-8)!important}
+  /* Below two columns the art stops being a side panel and becomes a band. */
+  /* The band is full-bleed, so the section gutter moves onto the wrap. */
+  main [data-hero-section]{display:flex;flex-direction:column;padding-inline:0!important}
+  main [data-hero-art]{position:static;order:-1;width:100%;height:min(46vh,380px);
+    -webkit-mask-image:none;mask-image:none}
+  main [data-hero-art] img{transform:none}
+  main [data-hero-veil]{background:linear-gradient(to bottom,rgba(248,247,244,0) 62%,var(--teal-50) 100%)}
+  main [data-hero-wrap]{min-height:0;padding-top:var(--space-8)}
+}
+
+/* ---- Phone ---- */
+@media (max-width:640px){
+  /* Type and rhythm step down together: lead copy drops to body size so a
+     paragraph never competes with a heading, and the big spacing steps
+     shrink with it. */
+  :root{
+    --size-lead:18px; --size-body-lg:18px;
+    --section-y:56px; --section-y-lg:56px;
+    --space-9:32px; --space-10:40px; --space-11:56px;
+  }
+
+  /* Header: hamburger left, mark centered, short CTA right. */
+  header [data-bar]{height:76px!important;padding:0 var(--space-5)!important;
+    gap:var(--space-3)!important;justify-content:space-between}
+  [data-burger]{display:flex}
+  [data-menu]{display:block}
+  [data-stickycta]{display:block}
+  [data-logo-full]{display:none!important}
+  [data-logo-mark]{display:block!important}
+  header [data-logo]{position:absolute;left:50%;transform:translateX(-50%)}
+  header > div > nav{display:none!important}
+  [data-lbl-lg]{display:none}
+  [data-lbl-sm]{display:inline}
+  main{padding-bottom:96px}
+
+  /* Hero: the photograph leads, full-bleed, and the words follow. */
+  main [data-hero-art]{height:min(42vh,320px)}
+  main [data-hero-wrap]{padding:var(--space-7) var(--space-5) var(--space-10)}
+  main [data-hero]{gap:var(--space-7)!important}
+  main [data-hero] h1{max-width:none!important;font-size:clamp(32px,8.4vw,42px)}
+
+  /* One CTA per row, full width, so nothing is a small target. */
+  main [data-actions]{flex-direction:column;align-items:stretch!important;width:100%;
+    gap:var(--space-4)!important}
+  main [data-actions] > *,main [data-actions] button{width:100%!important;justify-content:center}
+
+  /* Trust line reads as a list, not a wrapped sentence. */
+  main [data-trust]{flex-direction:column;align-items:flex-start!important;gap:var(--space-2)!important}
+  main [data-trust] [data-dot]{display:none}
+
+  main h1{font-size:clamp(32px,8vw,42px)!important}
+  main h2{font-size:clamp(26px,6.4vw,34px)!important}
+  main h3{font-size:clamp(23px,5.6vw,28px)!important}
+
+  /* Photographs get shorter boxes; the crop does the work, so the art is
+     never scaled out of proportion. */
+  main [data-ph="tall"]{height:340px!important}
+  main [data-ph="mid"]{height:280px!important}
+  main [data-ph="short"]{height:220px!important}
+
+  /* Footer: single column, mark lockup, tighter rhythm. */
+  footer{padding:var(--space-9) var(--space-5) var(--space-7)!important}
+  footer [data-foot]{grid-template-columns:1fr!important;gap:var(--space-7)!important}
+  footer [data-foot-legal]{margin-top:var(--space-7)!important;gap:var(--space-3)!important}
+  footer [data-foot-packages]{display:none!important}
+
+  /* Booking dialog: full-height sheet, single column, thumb-sized controls. */
+  [data-scrim]{padding:0!important;align-items:stretch!important}
+  [data-panel]{max-width:none!important;min-height:100%;border-radius:0!important}
+  [data-panel] [data-modal-head]{padding:var(--space-5) var(--space-5) var(--space-4)!important}
+  [data-panel] [data-modal-progress]{padding:0 var(--space-5) var(--space-5)!important}
+  [data-panel] [data-modal-body]{grid-template-columns:1fr!important;padding:0 var(--space-5) var(--space-6)!important}
+  [data-panel] [data-modal-foot]{padding:var(--space-5)!important;flex-direction:column-reverse;align-items:stretch!important}
+  [data-panel] [data-modal-foot] > *,[data-panel] [data-modal-foot] button{width:100%;justify-content:center}
+  [data-panel] [data-name-row]{grid-template-columns:1fr!important}
+  [data-panel] [data-slots]{max-height:none!important}
+}
+
+/* Touch devices have no hover to leave — the lift would stick. */
+@media (hover:none){
+  [data-photo]:hover{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  [data-step]{animation:none!important}
+  [data-faq-panel],[data-photo],[data-faq-row]{transition:none!important}
+  [data-photo]:hover{transform:none}
+  *{scroll-behavior:auto!important}
+}
+/* Links are always underlined in this system — never color-only */
+a{color:var(--text-link);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--text-link-hover);text-decoration-thickness:2.5px}
+a[data-plain]{text-decoration:none}
+</style>
+</helmet>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1f8b9c"/><text x="50" y="50" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#F8F7F4" text-anchor="middle" dominant-baseline="central">TLV</text></svg></template>
+
+<header style="position:sticky;top:0;z-index:30;background:rgba(253,251,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-subtle);box-shadow:var(--hdr-shadow,none);transition:box-shadow var(--dur-2, .2s) ease">
+  <div style="height:6px;background:var(--gradient-hope)"></div>
+  <div data-bar style="position:relative;max-width:var(--container);margin:0 auto;padding:0 var(--space-7);height:112px;display:flex;align-items:center;gap:var(--space-4)">
+    <button data-burger onClick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" style="width:48px;height:48px;flex:none;background:none;border:0;padding:0 12px;cursor:pointer;flex-direction:column;justify-content:center;gap:5px">
+      <span style="{{ burger1 }}"></span>
+      <span style="{{ burger2 }}"></span>
+      <span style="{{ burger3 }}"></span>
+    </button>
+    <button data-logo onClick="{{ goHome }}" aria-label="TLV Patient Care Consultants, home" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;flex:none">
+      <img data-logo-full src="assets/logo/logo-llc-full.png" alt="TLV Patient Care Consultants" width="250" height="81" style="width:182px;max-width:100%;height:auto">
+      <img data-logo-mark src="assets/logo/logo-llc-mark.png" alt="TLV Patient Care Consultants" width="250" height="164" style="width:46px;max-width:100%;height:auto">
+    </button>
+    <nav style="display:flex;gap:2px;margin-inline-start:auto">
+      <button onClick="{{ goHome }}" style="min-height:48px;padding:0 14px;background:var(--nav-home-bg);border:0;border-radius:var(--radius-pill);font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--nav-home-fg);cursor:pointer;transition:background var(--dur-1,.15s) ease,color var(--dur-1,.15s) ease" style-hover="background:var(--teal-50);color:var(--teal-800)">Home</button>
+      <button onClick="{{ goServices }}" style="min-height:48px;padding:0 14px;background:var(--nav-services-bg);border:0;border-radius:var(--radius-pill);font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--nav-services-fg);cursor:pointer;transition:background var(--dur-1,.15s) ease,color var(--dur-1,.15s) ease" style-hover="background:var(--teal-50);color:var(--teal-800)">Services</button>
+      <button onClick="{{ goAbout }}" style="min-height:48px;padding:0 14px;background:var(--nav-about-bg);border:0;border-radius:var(--radius-pill);font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--nav-about-fg);cursor:pointer;transition:background var(--dur-1,.15s) ease,color var(--dur-1,.15s) ease" style-hover="background:var(--teal-50);color:var(--teal-800)">About</button>
+    </nav>
+    <button onClick="{{ book }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--control-h-sm);padding:0 20px;font-family:var(--font-display);font-weight:var(--weight-semibold);font-size:var(--size-small);letter-spacing:var(--tracking-snug);line-height:1;text-decoration:none;border-radius:var(--radius-pill);cursor:pointer;box-shadow:none;background-image:linear-gradient(to right,#2f6d94 0%,#45855e 100%);color:var(--warm-0);border:none">
+      <span data-lbl-lg>Book a free call</span><span data-lbl-sm>Book a call</span>
+    </button>
+  </div>
+  <div data-menu style="{{ menuStyle }}">
+    <div>
+      <nav style="display:flex;flex-direction:column;padding:var(--space-3) var(--space-5) var(--space-5)">
+        <button onClick="{{ goHomeMenu }}" style="min-height:56px;padding:0 var(--space-4);background:var(--nav-home-bg);border:0;border-radius:var(--radius-md);font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--nav-home-fg);cursor:pointer;text-align:start">Home</button>
+        <button onClick="{{ goServicesMenu }}" style="min-height:56px;padding:0 var(--space-4);background:var(--nav-services-bg);border:0;border-radius:var(--radius-md);font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--nav-services-fg);cursor:pointer;text-align:start">Services</button>
+        <button onClick="{{ goAboutMenu }}" style="min-height:56px;padding:0 var(--space-4);background:var(--nav-about-bg);border:0;border-radius:var(--radius-md);font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--nav-about-fg);cursor:pointer;text-align:start">About</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div data-stickycta style="{{ stickyStyle }}">
+  <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="100%,64px">Book a free 30-minute consultation</x-import>
+</div>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main data-screen-label="Home">
+
+  <section data-hero-section style="position:relative;isolation:isolate;overflow:hidden;padding:0;background:radial-gradient(1100px 680px at 76% 14%,var(--violet-50) 0%,rgba(248,239,250,0) 62%),radial-gradient(900px 620px at 6% 92%,var(--mint-50) 0%,rgba(234,249,246,0) 64%),linear-gradient(166deg,var(--teal-50) 0%,var(--warm-25) 44%,var(--green-50) 100%)">
+    <div data-hero-art>
+      <img data-photo data-hero-img src="uploads/hero-image-1.jpg" alt="A daughter sitting beside her mother, holding her hand" style="width:100%;height:100%;object-fit:cover;object-position:56% 38%;display:block">
+      <span data-hero-veil></span>
+    </div>
+    <div data-hero-wrap>
+      <div data-hero data-2col style="display:grid;grid-template-columns:minmax(0,min(600px,50vw)) 1fr;gap:var(--space-10);align-items:center">
+        <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+          <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--violet-600)">TLV Patient Care Consulting</span>
+          <sc-if value="{{ hlPrimary }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Helping you manage your parent's healthcare with clarity and confidence.</h1></sc-if>
+          <sc-if value="{{ hlB }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Support for your parent. Greater peace of mind for your family.</h1></sc-if>
+          <sc-if value="{{ hlC }}" hint-placeholder-val="{{ true }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:20ch">Patient advocacy and healthcare navigation for seniors and the families supporting them.</h1></sc-if>
+          <sc-if value="{{ hlD }}" hint-placeholder-val="{{ false }}"><h1 data-hero-h1 style="color:var(--teal-900);max-width:19ch">Helping important healthcare details stay clear, organized, and understood.</h1></sc-if>
+          <p style="font:var(--text-lead);color:var(--warm-700);max-width:46ch">TLV Patient Care supports seniors and their families with patient portals, medical information, appointment preparation, and healthcare coordination, so important details do not get lost.</p>
+          <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;margin-top:var(--space-2)">
+            <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ heroCtaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+            <button onClick="{{ goServices }}" style="background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--teal-700);cursor:pointer">See how TLV can help
+              <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="arrow-right" size="22px" hint-size="22px,22px"></x-import></button>
+          </div>
+          <sc-if value="{{ showTrust }}" hint-placeholder-val="{{ true }}">
+          <div data-trust style="display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-5);align-items:center;padding-top:var(--space-4);border-top:1px solid var(--teal-200);width:100%;margin-top:var(--space-2)">
+            <span style="font:var(--text-small-role);color:var(--teal-800)">For seniors, adult children, and family caregivers</span>
+            <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
+            <span style="font:var(--text-small-role);color:var(--teal-800)">Independent support</span>
+            <span data-dot style="width:5px;height:5px;border-radius:50%;background:var(--teal-300)"></span>
+            <span style="font:var(--text-small-role);color:var(--teal-800)">In-person, virtual, and hybrid options</span>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-10);align-items:center">
+      <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:22ch">When a diagnosis changes everything, the details can become difficult to manage.</h2>
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+        <p style="font:var(--text-lead);color:var(--text-body);max-width:56ch">Appointments, portal messages, medical records, unfamiliar terms, and follow-up instructions can quickly become overwhelming. TLV Patient Care helps your family slow the process down, understand the information, prepare the right questions, and keep the next steps organized.</p>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="secondary" onClick="{{ goServices }}" icon-right="arrow-right" hint-size="auto,56px">Explore our services</x-import>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div style="max-width:var(--container);margin:0 auto">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Practical support</span>
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:24ch">What we actually do for your family</h2>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:52ch">Whether you live nearby or in another city, we help you and your parent stay informed, prepared, and more confident about what comes next.</p>
+      </div>
+      <div data-cols="4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-6)">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="monitor-smartphone" title="Patient portals" hint-size="100%,300px">Set up portal access, fix notifications so alerts arrive, and teach your parent how to log in, read lab results, and message their care team.</x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="notebook-pen" title="Appointment preparation" hint-size="100%,300px">Sit down before a major appointment, review labs and scans together, and write down the questions that need answering.</x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="folder-open" title="Records and information" hint-size="100%,300px">Organize records, keep the medication list accurate, and research reliable information so your family is working from the same page.</x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" icon="list-checks" title="What happens next" hint-size="100%,300px">Track follow-up instructions, appointments, and next steps, so nothing important is missed after everyone leaves the room.</x-import>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-brand-deep);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:var(--space-10);align-items:center">
+      <div data-ph="mid" style="position:relative;height:440px;border-radius:var(--radius-xl);overflow:hidden;background:var(--surface-mist)">
+        <img data-photo src="uploads/peace-of-mind.jpg" alt="A senior and her daughter looking at a tablet together at the kitchen table" style="width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Peace of mind</span>
+        <h2 style="font:var(--text-h2);color:var(--warm-0);max-width:22ch">Healthcare should not feel impossible to understand.</h2>
+        <p style="font:var(--text-lead);color:var(--teal-100);max-width:54ch">We work alongside seniors at their pace, helping them navigate online systems, prepare for appointments, review information in clear language, and build greater confidence managing their own healthcare.</p>
+        <p style="font:var(--text-body-role);color:var(--mint-300);max-width:48ch">You stay in charge of your own care. Bring a family member if you would like. As many times as you need.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--space-10)">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">What to expect</span>
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:16ch">One clear path, from the first call onward</h2>
+        <p style="font:var(--text-body-role);color:var(--text-muted);max-width:38ch">No cost, no obligation. You do not have to decide today.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Steps" items="{{ steps }}" current="{{ stepCurrent }}" hint-size="100%,420px"></x-import>
+        <button onClick="{{ goProxy }}" style="align-self:flex-start;background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--teal-700);cursor:pointer">Complete the written access proxy
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="arrow-right" size="20px" hint-size="20px,20px"></x-import></button>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);align-items:stretch">
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" tone="soft" icon="heart-handshake" title="Independent support" hint-size="100%,340px">TLV Patient Care is independent from hospitals, insurance companies, and medical facilities. We do not diagnose, prescribe, or recommend treatment. We serve as educators, researchers, advocates and logistics guides, helping clients prepare for more productive conversations with their licensed healthcare professionals.</x-import>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" accent="1" icon="user-round" title="Meet Terry" footer="{{ aboutLink }}" hint-size="100%,340px">Terry Vincent is a retired Principal Surgical Technologist and former UCSF Radiation Oncology staff member with a BA in Psychology from Golden Gate University. Her work is also shaped by decades of caring for her own family through cancer, dementia, disability, hospitalization, and end-of-life care.</x-import>
+    </div>
+  </section>
+
+  <section id="tlv-book-home" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
+      <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Every family deserves a clearer path forward.</h2>
+      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+      <p style="font:var(--text-small-role);color:var(--violet-50);opacity:.85">No cost, no obligation. A person answers.</p>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Services">
+
+  <section style="background:var(--gradient-calm);padding:var(--section-y-lg) var(--space-7) var(--section-y)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-10);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">How TLV can help</span>
+        <h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:20ch">Support built around the problem in front of you.</h1>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:54ch">Every family arrives at a different point. Some need help logging in. Most want to understand what is happening and what the options are. We start where you are, and the support grows only as far as it needs to.</p>
+        <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+        </div>
+      </div>
+      <div data-ph="mid" style="position:relative;height:420px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-md)">
+        <img data-photo src="uploads/services-hero.jpg" alt="Two people at a kitchen table going through paperwork together" style="width:100%;height:100%;object-fit:cover;object-position:50% 55%;display:block">
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-9);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Badge" tone="success" icon="phone-call" hint-size="auto,34px">Free · 30 minutes</x-import>
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:20ch">Start with a free 30-minute consultation</h2>
+        <p style="font:var(--text-body-role);color:var(--text-body);max-width:54ch">Tell us what has happened and what is worrying you. We will explain what we can help with, what we cannot, and what the clearest next step looks like. If TLV is not the right fit, we will say so.</p>
+        <p style="font:var(--text-body-role);color:var(--teal-700);font-weight:600">No cost, no obligation. Bring a family member if you would like.</p>
+      </div>
+      <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg)">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="home" size="28px" color="var(--brand)" hint-size="28px,28px"></x-import>
+          <span style="font:var(--text-h5);color:var(--text-strong)">In person</span>
+          <span style="font:var(--text-small-role);color:var(--text-muted)">Home visits before an appointment, and in the clinic beside you.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg)">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="video" size="28px" color="var(--brand)" hint-size="28px,28px"></x-import>
+          <span style="font:var(--text-h5);color:var(--text-strong)">Virtual</span>
+          <span style="font:var(--text-small-role);color:var(--text-muted)">For families in another city, at a time that works around work.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg)">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="users" size="28px" color="var(--brand)" hint-size="28px,28px"></x-import>
+          <span style="font:var(--text-h5);color:var(--text-strong)">Hybrid</span>
+          <span style="font:var(--text-small-role);color:var(--text-muted)">We are in the room with your parent, you are on the call from wherever you are.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-6);background:var(--surface-accent-soft);border:1px solid var(--green-100);border-radius:var(--radius-lg)">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="file-signature" size="28px" color="var(--green-600)" hint-size="28px,28px"></x-import>
+          <span style="font:var(--text-h5);color:var(--text-strong)">Written access</span>
+          <span style="font:var(--text-small-role);color:var(--text-muted)">A signed proxy gives us access. Nothing happens without it.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div style="max-width:var(--container);margin:0 auto">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Packages</span>
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:22ch">Each package builds on the one before it</h2>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:56ch">Flat fees, agreed before anything starts. Prices are not listed here because the right package depends on what you are facing. We will walk you through the cost on your free call.</p>
+      </div>
+      <div data-cols="3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6);margin-bottom:var(--space-6)">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Getting set up" icon="monitor-smartphone" title="Educational" hint-size="100%,420px">
+          <p style="margin:0 0 var(--space-5)">For the family whose parent cannot get into the system at all.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Portal login set up and working</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Notifications fixed so alerts actually arrive</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>How to read lab results and schedule with the care team</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Medication list checked for accuracy, and how to reorder</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Proxy access set up for family members</span></li>
+          </ul>
+        </x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" accent="1" eyebrow="Appointment support" icon="users" title="Premium" footer="{{ mostFamilies }}" hint-size="100%,420px">
+          <p style="margin:0 0 var(--space-5)">For the family who needs to know what is wrong and what the options are.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Educational</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>A visit before the appointment to review labs and scans and write down questions</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>An advocate in the exam room taking notes, so your parent can listen</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>A debrief afterwards, in plain language, while it is still fresh</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>How to use the care team and how to request a second opinion</span></li>
+          </ul>
+        </x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Surgery preparation" icon="clipboard-check" title="Specialty — surgical" hint-size="100%,420px">
+          <p style="margin:0 0 var(--space-5)">For the family facing a major operation.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Premium</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>The surgical plan reviewed together, at home or virtually</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Questions written for the surgeon before you are in the room</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>What actually happens in the operating room, explained by someone who worked in one</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>How to research the surgeon</span></li>
+          </ul>
+        </x-import>
+      </div>
+      <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6)">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" eyebrow="Cancer diagnosis support" icon="route" title="Specialty — cancer" hint-size="100%,380px">
+          <p style="margin:0 0 var(--space-5)">For the family working through a complex cancer diagnosis and a long treatment plan.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Everything in Specialty — surgical</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>The treatment timeline mapped out, step by step</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Radiation, chemotherapy and surgery explained in clear language, including the difference between the options you were given</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Side effects tracked, so your parent knows what to report and when</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-600)" hint-size="22px,22px"></x-import><span>Reliable published research gathered into questions for the specialist</span></li>
+          </ul>
+        </x-import>
+        <div data-deep-card style="display:flex"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" tone="deep" eyebrow="Ongoing" icon="calendar-days" title="Monthly care retainer" hint-size="100%,380px">
+          <p style="margin:0 0 var(--space-5)">For families who want someone watching the chart every week, not only around appointments.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-3)">
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>Everything in Specialty — surgical</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>A set number of clinic visits each month</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>Weekly portal monitoring, so new results and messages are seen</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>Records kept organized and current</span></li>
+            <li style="display:flex;gap:var(--space-3);align-items:flex-start"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="22px" color="var(--green-300)" hint-size="22px,22px"></x-import><span>Billed monthly, cancel whenever you no longer need it</span></li>
+          </ul>
+        </x-import></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-violet);padding:var(--space-11) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start">
+      <h2 style="font:var(--text-h3);color:var(--warm-0)">The goal is not to add another layer of complexity. It is to create clarity.</h2>
+      <p style="font:var(--text-body-role);color:var(--violet-50)">Families know what has happened, what needs attention, and what questions to ask next. Seniors feel heard, supported, and more involved in their own healthcare journey.</p>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div data-split style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:660px 1fr;gap:var(--space-10);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:var(--space-8);align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start">
+          <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">FAQ</span>
+          <h2 style="font:var(--text-h2);color:var(--text-strong)">We are educators, researchers, advocates, and logistics guides.</h2>
+          <p style="font:var(--text-lead);color:var(--text-body)">We do not diagnose conditions, prescribe medication, or advise which treatment to choose. What we can do is explain what you were told, gather reliable information, help you write the questions, and make sure the next steps are organized.</p>
+          <p style="font:var(--text-lead);font-style:italic;color:var(--teal-700)">Medical decisions remain between the client and their licensed healthcare professionals.</p>
+        </div>
+        <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);width:100%">
+          <sc-for list="{{ faqRows }}" as="r" hint-placeholder-count="6">
+            <div data-faq-row style="{{ r.rowStyle }}">
+              <button data-faq-q onClick="{{ r.toggle }}" aria-expanded="{{ r.open }}" style="{{ r.qStyle }}">
+                <span>{{ r.q }}</span>
+                <span data-faq-chevron style="{{ r.chevStyle }}">
+                  <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="chevron-down" size="24px" color="var(--teal-600)" hint-size="24px,24px"></x-import>
+                </span>
+              </button>
+              <div data-faq-panel data-open="{{ r.openAttr }}">
+                <div>
+                  <p style="padding:0 var(--space-6) var(--space-6);font:var(--text-body-role);color:var(--text-body);max-width:var(--measure)">{{ r.a }}</p>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+      <div data-ph="mid" data-sticky style="position:relative;height:720px;border-radius:var(--radius-xl);overflow:hidden;background:var(--surface-mist);position:sticky;top:144px">
+        <img data-photo src="uploads/services-footer.jpg" alt="An advocate showing a client something on a laptop" style="width:100%;height:100%;object-fit:cover;object-position:55% 40%;display:block">
+      </div>
+    </div>
+  </section>
+
+  <section id="tlv-book-services" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
+      <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Let's talk about what your family needs.</h2>
+      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">Thirty minutes, no cost, no obligation. By the end of the call you will know the clearest next step, whether or not it involves TLV.</p>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="About">
+
+  <section style="background:var(--gradient-calm);padding:var(--section-y-lg) var(--space-7) var(--section-y)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-10);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Meet Terry</span>
+        <h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:20ch">Professional healthcare experience. Personal understanding. Practical support for families.</h1>
+        <p style="font:var(--text-lead);color:var(--text-muted);max-width:54ch">I created TLV Patient Care to help seniors and their families navigate difficult diagnoses, online healthcare systems, and important next steps with greater clarity and confidence.</p>
+        <div data-actions style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center">
+          <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+        </div>
+      </div>
+      <div data-ph="tall" style="position:relative;height:520px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-md)">
+        <image-slot id="tlv-terry" shape="rect" placeholder="Portrait of Terry — close range, in her own clothes, relaxed and looking at the camera. Daylight, warm white balance, light background. Professional but not clinical. No scrubs, no stethoscope."></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.8fr 1.2fr;gap:var(--space-10);align-items:flex-start">
+      <h2 data-sticky style="font:var(--text-h2);color:var(--text-strong);max-width:16ch;position:sticky;top:144px">Why I started TLV Patient Care</h2>
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);max-width:var(--measure)">
+        <p style="font:var(--text-lead);color:var(--text-body)">I have spent much of my life helping people understand complicated information, make informed decisions, and feel supported during difficult moments.</p>
+        <p>Before entering healthcare, I worked in human resources and benefits, where I helped employees and clients navigate payroll, benefits, employment questions, and complex administrative concerns. That experience taught me how important it is to listen carefully, explain information clearly, and help people find the next practical step.</p>
+        <p>In 2001, I began working at UCSF in Radiation Oncology. I later completed Surgical Technologist training and built a long career in the operating room, eventually serving as a Principal Surgical Technologist. My work required precision, calm communication, strict respect for patient privacy, and a constant responsibility to protect and advocate for the patient before, during, and after surgery. During the COVID pandemic, I also served as a first responder in the operating room and ICU.</p>
+        <p>I earned a Bachelor of Arts in Psychology from Golden Gate University, graduating magna cum laude in 2002. That education, together with my healthcare experience, shaped the way I work with people today: patiently, respectfully, and without making them feel overwhelmed by information.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.8fr 1.2fr;gap:var(--space-10);align-items:flex-start">
+      <div data-sticky style="display:flex;flex-direction:column;gap:var(--space-6);position:sticky;top:144px">
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:16ch">My experience is also personal</h2>
+        <div data-ph="short" style="position:relative;height:300px;border-radius:var(--radius-xl);overflow:hidden;background:var(--surface-mist)">
+          <img data-photo src="uploads/about-footer.jpg" alt="An older hand and a younger hand resting together" style="width:100%;height:100%;object-fit:cover;object-position:50% 55%;display:block">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);max-width:var(--measure)">
+        <p style="font:var(--text-lead);color:var(--text-body)">My understanding of caregiving does not come only from my professional career. It comes from decades of caring for my own family.</p>
+        <p>When my mother was diagnosed with breast cancer, I helped manage her daily care until she passed away. After that, I became the primary caregiver for my family. Over the years, I supported my father through dementia and chronic health conditions, helped care for two uncles, managed the ongoing needs of my sister, and helped provide end-of-life care for my mother-in-law. The work included appointments, medications, records, finances, household responsibilities, transportation, emotional support, and the everyday logistics that can become overwhelming when someone is seriously ill.</p>
+        <p>In 2025, my brother was hospitalized for three months after being diagnosed with multiple myeloma. Our family received very little direct communication about what was happening. I learned his diagnosis and followed his care by reading the notes in his medical chart. When discharge was being considered without the level of support he needed, I used the information in the record to ask questions, challenge the plan, and help secure continued rehabilitation and around-the-clock care.</p>
+        <p>That experience confirmed something I had already seen many times in healthcare: after a difficult diagnosis, people often hear the name of the illness and little else. Important instructions, options, portal messages, and follow-up steps can be lost at the exact moment a family is least prepared to manage them.</p>
+        <p style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">That is why I created TLV Patient Care.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-violet);padding:var(--section-y) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="quote" size="40px" color="var(--green-300)" hint-size="40px,40px"></x-import>
+      <p style="font:var(--text-h3);font-family:var(--font-display);color:var(--warm-0);text-wrap:balance">My goal is not to take over a client's healthcare forever. My goal is to help people feel more informed, more prepared, and more confident managing their own healthcare and communicating with their care team.</p>
+      <span style="font:var(--text-small-role);color:var(--violet-50);letter-spacing:var(--tracking-caps);text-transform:uppercase">Terry Vincent, founder</span>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div data-2col style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:.8fr 1.2fr;gap:var(--space-10);align-items:flex-start">
+      <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:16ch">How I help</h2>
+      <div style="display:flex;flex-direction:column;gap:var(--space-6);max-width:var(--measure)">
+        <p style="font:var(--text-lead);color:var(--text-body)">I work with seniors, adult children, and family caregivers to make healthcare information easier to understand and the next steps easier to manage.</p>
+        <p>Depending on the client's needs, I can help set up and navigate patient portals, organize records, prepare questions for appointments, attend appointments as an advocate and note-taker, research reliable information, and help families keep track of what happens next.</p>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Card" tone="soft" icon="shield-check" title="My role and professional boundaries" hint-size="100%,260px">
+          <p style="margin:0 0 var(--space-4)">I do not diagnose conditions, prescribe medication, or advise clients which treatment to choose. I serve as an educator, researcher, advocate, and logistics guide. Medical decisions remain between the client and their licensed healthcare professionals.</p>
+          <p style="margin:0">TLV Patient Care is independent from hospitals, medical facilities, and insurance companies. My responsibility is to the client and family I am supporting.</p>
+        </x-import>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="secondary" onClick="{{ goServices }}" icon-right="arrow-right" hint-size="auto,56px">See the packages</x-import>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-page);padding:var(--section-y) var(--space-7)">
+    <div style="max-width:var(--container);margin:0 auto">
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-9)">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Credentials and relevant experience</span>
+        <h2 style="font:var(--text-h2);color:var(--text-strong);max-width:22ch">Twenty-three years in healthcare, and a lifetime of caregiving</h2>
+      </div>
+      <ul data-2col style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4) var(--space-9)">
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="graduation-cap" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Bachelor of Arts in Psychology, Golden Gate University, magna cum laude, 2002</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="award" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Retired Principal Surgical Technologist</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="building-2" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Former UCSF Radiation Oncology staff member</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="activity" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Operating Room and ICU first-responder experience during the COVID pandemic</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="house-heart" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>In-Home Support Professional</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="lock" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Extensive experience working under HIPAA and patient privacy requirements</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="briefcase" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Professional experience in human resources, benefits, payroll, training, and client support</span></li>
+        <li style="display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4) 0;border-top:1px solid var(--border-subtle)"><x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="heart-handshake" size="24px" color="var(--brand)" hint-size="24px,24px"></x-import><span>Decades of firsthand family caregiving and healthcare advocacy experience</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="tlv-book-about" style="background:var(--gradient-dusk);padding:var(--section-y-lg) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:center;text-align:center">
+      <h2 style="font:var(--text-h1);color:var(--warm-0);max-width:24ch">Every family deserves a clearer path forward.</h2>
+      <p style="font:var(--text-lead);color:var(--violet-50);max-width:50ch">When healthcare feels confusing or difficult to manage, you do not have to figure out every detail alone. Let's talk about what your family needs and the support that may help.</p>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="inverse" size="lg" icon-left="calendar-check" onClick="{{ book }}" hint-size="auto,64px">Book a free 30-minute consultation</x-import>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<sc-if value="{{ bookingOpen }}" hint-placeholder-val="{{ false }}">
+<div data-scrim onClick="{{ closeBooking }}" style="position:fixed;inset:0;z-index:80;background:rgba(10,50,58,.48);backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:var(--space-8) var(--space-6);overflow-y:auto">
+  <div data-panel onClick="{{ stop }}" role="dialog" aria-modal="true" style="width:100%;max-width:940px;background:var(--surface-card);border-radius:var(--radius-2xl);box-shadow:var(--shadow-xl);overflow:hidden">
+    <div style="height:6px;background:var(--gradient-hope)"></div>
+
+    <div data-modal-head style="display:flex;align-items:flex-start;gap:var(--space-5);padding:var(--space-7) var(--space-8) var(--space-5)">
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--teal-600)">Free consultation · 30 minutes</span>
+        <h2 style="font:var(--text-h3);color:var(--text-strong)">{{ stepTitle }}</h2>
+        <p style="font:var(--text-body-role);color:var(--text-muted);max-width:56ch">{{ stepBlurb }}</p>
+      </div>
+      <button onClick="{{ closeBooking }}" aria-label="Close" style="margin-inline-start:auto;flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--border-subtle);background:var(--surface-card);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-1,.15s) ease" style-hover="background:var(--teal-50);color:var(--teal-800)">
+        <span data-icon style="width:24px;height:24px;background-color:currentColor;-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/x.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/x.svg)"></span>
+      </button>
+    </div>
+
+    <div data-modal-progress style="display:flex;gap:var(--space-2);padding:0 var(--space-8) var(--space-6)">
+      <span style="flex:1;height:5px;border-radius:var(--radius-pill);background:{{ bar1 }}"></span>
+      <span style="flex:1;height:5px;border-radius:var(--radius-pill);background:{{ bar2 }}"></span>
+      <span style="flex:1;height:5px;border-radius:var(--radius-pill);background:{{ bar3 }}"></span>
+    </div>
+
+    <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+    <div data-step data-modal-body style="display:grid;grid-template-columns:1.25fr .95fr;gap:var(--space-8);padding:0 var(--space-8) var(--space-8)">
+      <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+        <div style="display:flex;align-items:center;gap:var(--space-4)">
+          <button onClick="{{ prevMonth }}" aria-label="Previous month" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--border-subtle);background:var(--surface-card);cursor:pointer;color:var(--teal-700);display:flex;align-items:center;justify-content:center" style-hover="background:var(--teal-50)">
+            <span data-icon style="width:24px;height:24px;background-color:currentColor;-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-left.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-left.svg)"></span>
+          </button>
+          <span style="font-family:var(--font-display);font-size:var(--size-h5);font-weight:600;color:var(--text-strong);min-width:11ch;text-align:center">{{ monthLabel }}</span>
+          <button onClick="{{ nextMonth }}" aria-label="Next month" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--border-subtle);background:var(--surface-card);cursor:pointer;color:var(--teal-700);display:flex;align-items:center;justify-content:center" style-hover="background:var(--teal-50)">
+            <span data-icon style="width:24px;height:24px;background-color:currentColor;-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-right.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-right.svg)"></span>
+          </button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;min-height:330px">
+          <sc-for list="{{ dayNames }}" as="d" hint-placeholder-count="7">
+            <span style="text-align:center;font-family:var(--font-display);font-size:var(--size-caption);font-weight:600;letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted);padding-bottom:var(--space-2)">{{ d }}</span>
+          </sc-for>
+          <sc-if value="{{ calReady }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+            <button onClick="{{ c.onClick }}" disabled="{{ c.disabled }}" style="{{ c.style }}">{{ c.label }}</button>
+          </sc-for>
+          </sc-if>
+        </div>
+        <p style="font:var(--text-small-role);color:var(--text-muted)">Weekdays, 8am – 6pm. Pacific time.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);min-width:0">
+        <span style="font-family:var(--font-display);font-size:var(--size-body-lg);font-weight:600;color:var(--text-strong)">{{ slotHeading }}</span>
+        <sc-if value="{{ hasDate }}" hint-placeholder-val="{{ false }}">
+        <div data-slots style="display:flex;flex-direction:column;gap:10px;max-height:360px;overflow-y:auto;padding-inline-end:4px">
+          <sc-for list="{{ slots }}" as="s" hint-placeholder-count="8">
+            <button onClick="{{ s.onClick }}" style="{{ s.style }}">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        </sc-if>
+        <sc-if value="{{ noDate }}" hint-placeholder-val="{{ true }}">
+        <p style="font:var(--text-body-role);color:var(--text-muted)">Pick a day on the left and the open times will appear here.</p>
+        </sc-if>
+      </div>
+    </div>
+    <div data-modal-foot style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;justify-content:space-between;padding:var(--space-6) var(--space-8);border-top:1px solid var(--border-subtle);background:var(--surface-mist)">
+      <span style="font:var(--text-body-role);color:var(--text-muted)">No cost, no obligation. You do not have to decide today.</span>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="primary" size="lg" icon-right="arrow-right" disabled="{{ step1Incomplete }}" onClick="{{ toStep2 }}" hint-size="auto,64px">Continue</x-import>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+    <div data-step style="display:flex;flex-direction:column;gap:var(--space-6);padding:0 var(--space-8) var(--space-8);max-width:680px">
+      <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);background:var(--surface-accent-soft);border:1px solid var(--green-200);border-radius:var(--radius-md)">
+        <span data-icon style="width:24px;height:24px;background-color:var(--green-600);-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/calendar-check.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/calendar-check.svg)"></span>
+        <span style="font-family:var(--font-display);font-weight:600;color:var(--text-strong)">{{ chosenLabel }}</span>
+        <button onClick="{{ toStep1 }}" style="margin-inline-start:auto;min-height:44px;background:none;border:0;padding:0 4px;font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--teal-700);cursor:pointer;text-decoration:underline">Change</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Who is the call about?</span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ whoOptions }}" as="o" hint-placeholder-count="4">
+            <button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ whoIsOther }}" hint-placeholder-val="{{ false }}">
+        <input value="{{ fWhoOther }}" onChange="{{ setWhoOther }}" placeholder="Who are you calling about?" style="height:56px;padding:0 16px;margin-top:4px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md);max-width:420px">
+        </sc-if>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">How would you like to meet?</span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ formatOptions }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.onClick }}" style="{{ o.style }}">
+              <span data-icon style="{{ o.iconStyle }}"></span>{{ o.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isInPerson }}" hint-placeholder-val="{{ false }}">
+        <label style="display:flex;flex-direction:column;gap:8px;margin-top:4px;max-width:520px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Location</span>
+          <input value="{{ fLocation }}" onChange="{{ setLocation }}" placeholder="Home address, or the clinic where we should meet" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+        </label>
+        </sc-if>
+      </div>
+
+      <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">First name</span>
+          <input value="{{ fFirst }}" onChange="{{ setFirst }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Last name</span>
+          <input value="{{ fLast }}" onChange="{{ setLast }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+        </label>
+      </div>
+
+      <label style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Phone</span>
+        <input value="{{ fPhone }}" onChange="{{ setPhone }}" type="tel" placeholder="(555) 000-0000" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+      </label>
+
+      <label style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Email</span>
+        <input value="{{ fEmail }}" onChange="{{ setEmail }}" type="email" placeholder="you@example.com" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+      </label>
+
+      <label style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">What is going on? <span style="font-weight:400;color:var(--text-muted)">Optional</span></span>
+        <textarea value="{{ fNote }}" onChange="{{ setNote }}" rows="3" placeholder="A sentence or two is plenty. You can tell us the rest when we meet." style="padding:14px 16px;font-family:var(--font-body);font-size:var(--size-body);line-height:1.6;color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md);resize:vertical"></textarea>
+      </label>
+    </div>
+    <div data-modal-foot style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;justify-content:space-between;padding:var(--space-6) var(--space-8);border-top:1px solid var(--border-subtle);background:var(--surface-mist)">
+      <button onClick="{{ toStep1 }}" style="min-height:48px;background:none;border:0;padding:0;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--teal-700);cursor:pointer">
+        <span data-icon style="width:20px;height:20px;background-color:currentColor;-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-left.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/chevron-left.svg)"></span>Back to times</button>
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="calendar-check" disabled="{{ step2Incomplete }}" onClick="{{ confirm }}" hint-size="auto,64px">Request my free call</x-import>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+    <div data-step style="display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start;padding:0 var(--space-8) var(--space-8);max-width:620px">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--surface-accent-soft);border:1px solid var(--green-200);display:flex;align-items:center;justify-content:center">
+        <span data-icon style="width:36px;height:36px;background-color:var(--green-600);-webkit-mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/check.svg);mask-image:url(https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/check.svg)"></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+        <span style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">{{ chosenLabel }}</span>
+        <span style="font:var(--text-body-role);color:var(--text-muted)">{{ confirmLine }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg);width:100%">
+        <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">What happens next</span>
+        <span style="font:var(--text-body-role);color:var(--text-body)">You will get a confirmation email within the hour, and we will contact you to confirm the details of your free consultation. Nothing is charged, and you do not have to decide anything right away.</span>
+      </div>
+    </div>
+    <div data-modal-foot style="display:flex;justify-content:flex-end;padding:var(--space-6) var(--space-8);border-top:1px solid var(--border-subtle);background:var(--surface-mist)">
+      <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="primary" size="lg" onClick="{{ closeBooking }}" hint-size="auto,64px">Done</x-import>
+    </div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isProxy }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Written access proxy">
+
+  <section style="background:var(--gradient-calm);padding:var(--space-9) var(--space-7) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start">
+      <h1 style="font:var(--text-h1);letter-spacing:var(--tracking-tight);color:var(--text-strong);max-width:20ch">Written access proxy</h1>
+      <p style="font:var(--text-lead);color:var(--text-muted);max-width:60ch">This form authorizes TLV Patient Care to see the medical record and speak with the care team on your loved one's behalf. Nothing happens before it is signed, and it can be withdrawn at any time.</p>
+    </div>
+  </section>
+
+  <sc-if value="{{ proxySubmitted }}" hint-placeholder-val="{{ false }}">
+  <section style="background:var(--surface-card);padding:var(--section-y) var(--space-7)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6);align-items:flex-start">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--surface-accent-soft);border:1px solid var(--green-200);display:flex;align-items:center;justify-content:center">
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Icon" name="check" size="36px" color="var(--green-600)" hint-size="36px,36px"></x-import>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+        <span style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">Proxy received</span>
+        <span style="font:var(--text-body-role);color:var(--text-muted)">We will confirm by email and follow up before doing anything with the record.</span>
+      </div>
+      <button onClick="{{ resetProxy }}" style="background:none;border:0;padding:0;min-height:48px;font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--teal-700);cursor:pointer;text-decoration:underline">Start a new form</button>
+    </div>
+  </section>
+  </sc-if>
+
+  <sc-if value="{{ proxyNotSubmitted }}" hint-placeholder-val="{{ true }}">
+  <section style="background:var(--surface-card);padding:var(--space-7) var(--space-7) var(--section-y)">
+    <div style="max-width:var(--container-narrow);margin:0 auto;display:flex;flex-direction:column;gap:var(--space-9)">
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+        <h2 style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">The person receiving care</h2>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Full name</span>
+            <input value="{{ fClientName.value }}" onChange="{{ fClientName.onChange }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Date of birth</span>
+            <input value="{{ fClientDob.value }}" onChange="{{ fClientDob.onChange }}" type="date" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Phone</span>
+            <input value="{{ fClientPhone.value }}" onChange="{{ fClientPhone.onChange }}" type="tel" placeholder="(555) 000-0000" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Email</span>
+            <input value="{{ fClientEmail.value }}" onChange="{{ fClientEmail.onChange }}" type="email" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Home address</span>
+          <input value="{{ fClientAddress.value }}" onChange="{{ fClientAddress.onChange }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+        </label>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+        <h2 style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">The family member arranging support</h2>
+        <p style="font:var(--text-body-role);color:var(--text-muted)">If you are the person receiving care and arranging this yourself, use your own details here too.</p>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Full name</span>
+            <input value="{{ fRepName.value }}" onChange="{{ fRepName.onChange }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Relationship to them</span>
+            <input value="{{ fRepRelationship.value }}" onChange="{{ fRepRelationship.onChange }}" placeholder="Daughter, son, spouse…" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Phone</span>
+            <input value="{{ fRepPhone.value }}" onChange="{{ fRepPhone.onChange }}" type="tel" placeholder="(555) 000-0000" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Email</span>
+            <input value="{{ fRepEmail.value }}" onChange="{{ fRepEmail.onChange }}" type="email" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+        <h2 style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">What TLV is authorized to do</h2>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Providers and portals covered</span>
+          <textarea value="{{ fProviders.value }}" onChange="{{ fProviders.onChange }}" rows="3" placeholder="Name the hospital, clinic or portal — for example, Sutter Health MyHealthOnline" style="padding:14px 16px;font-family:var(--font-body);font-size:var(--size-body);line-height:1.6;color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md);resize:vertical"></textarea>
+        </label>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+          <label style="display:flex;align-items:center;gap:var(--space-3);min-height:48px;cursor:pointer">
+            <input checked="{{ cScopePortal.checked }}" onChange="{{ cScopePortal.onChange }}" type="checkbox" style="width:22px;height:22px;accent-color:var(--brand)">
+            <span style="font:var(--text-body-role);color:var(--text-body)">View and manage the patient portal</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:var(--space-3);min-height:48px;cursor:pointer">
+            <input checked="{{ cScopeRecords.checked }}" onChange="{{ cScopeRecords.onChange }}" type="checkbox" style="width:22px;height:22px;accent-color:var(--brand)">
+            <span style="font:var(--text-body-role);color:var(--text-body)">Review medical records and test results</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:var(--space-3);min-height:48px;cursor:pointer">
+            <input checked="{{ cScopeSpeak.checked }}" onChange="{{ cScopeSpeak.onChange }}" type="checkbox" style="width:22px;height:22px;accent-color:var(--brand)">
+            <span style="font:var(--text-body-role);color:var(--text-body)">Speak directly with the care team</span>
+          </label>
+        </div>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Effective from</span>
+            <input value="{{ fStartDate.value }}" onChange="{{ fStartDate.onChange }}" type="date" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Until <span style="font-weight:400;color:var(--text-muted)">Optional — leave blank until withdrawn</span></span>
+            <input value="{{ fEndDate.value }}" onChange="{{ fEndDate.onChange }}" type="date" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-6);background:var(--surface-brand-soft);border:1px solid var(--teal-100);border-radius:var(--radius-lg)">
+        <h2 style="font:var(--text-h4);font-family:var(--font-display);color:var(--text-strong)">Signature</h2>
+        <p style="font:var(--text-body-role);color:var(--text-body)">By typing your name below, you confirm you have the authority to grant this access and that everything above is accurate.</p>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Signed by</span>
+            <input value="{{ fSignerName.value }}" onChange="{{ fSignerName.onChange }}" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Date</span>
+            <input value="{{ fSignDate.value }}" onChange="{{ fSignDate.onChange }}" type="date" style="height:56px;padding:0 16px;font-family:var(--font-body);font-size:var(--size-body);color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+          </label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-display);font-size:var(--size-body);font-weight:600;color:var(--text-strong)">Typed signature</span>
+          <input value="{{ fSignatureText.value }}" onChange="{{ fSignatureText.onChange }}" placeholder="Type your full legal name" style="height:56px;padding:0 16px;font-family:var(--font-display);font-size:var(--size-body-lg);font-style:italic;color:var(--text-strong);background:var(--surface-card);border:2px solid var(--border-strong);border-radius:var(--radius-md)">
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:var(--space-3);cursor:pointer">
+          <input checked="{{ cAck.checked }}" onChange="{{ cAck.onChange }}" type="checkbox" style="width:22px;height:22px;margin-top:2px;accent-color:var(--brand)">
+          <span style="font:var(--text-body-role);color:var(--text-body)">I understand this proxy can be withdrawn at any time, and that TLV Patient Care does not diagnose, prescribe, or make treatment decisions.</span>
+        </label>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;justify-content:space-between">
+        <span style="font:var(--text-small-role);color:var(--text-muted)">This form is a mockup and does not submit anywhere yet.</span>
+        <x-import component-from-global-scope="TLVPatientCareDesignSystem_158230.Button" variant="cta" dc-props="{{ ctaProps }}" size="lg" icon-left="file-signature" disabled="{{ proxyIncomplete }}" onClick="{{ submitProxy }}" hint-size="auto,64px">Sign and submit the proxy</x-import>
+      </div>
+
+    </div>
+  </section>
+  </sc-if>
+
+</main>
+</sc-if>
+
+<footer style="background:var(--surface-brand-deep);color:var(--teal-100);padding:var(--space-11) var(--space-7) var(--space-8)">
+  <div data-foot style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:var(--space-9)">
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start">
+      <img data-logo-full src="assets/logo/logo-llc-white.webp" alt="TLV Patient Care Consultants" width="300" height="99" style="width:220px;max-width:100%;height:auto">
+      <img data-logo-mark src="assets/logo/logo-llc-mark.png" alt="TLV Patient Care Consultants" width="250" height="164" style="width:64px;max-width:100%;height:auto">
+      <p style="font:var(--text-body-role);color:var(--teal-100);max-width:34ch">Independent patient advocacy and healthcare navigation for seniors and the families supporting them.</p>
+    </div>
+    <div data-foot-pages style="display:flex;flex-direction:column;gap:var(--space-1);align-items:flex-start">
+      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300);margin-bottom:var(--space-2)">Pages</span>
+      <button onClick="{{ goHome }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">Home</button>
+      <button onClick="{{ goServices }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">Services</button>
+      <button onClick="{{ goAbout }}" style="display:flex;align-items:center;min-height:var(--tap-min);padding:0 var(--space-3);margin-inline-start:calc(var(--space-3) * -1);background:none;border:0;font:var(--text-body-role);color:var(--teal-100);cursor:pointer;text-align:start">About</button>
+    </div>
+    <div data-foot-packages style="display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start">
+      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Packages</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">Educational</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">Premium</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">Specialty — surgical</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">Specialty — cancer</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">Monthly care retainer</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start">
+      <span style="font:var(--text-eyebrow);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--mint-300)">Get in touch</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">(555) 012-8834</span>
+      <span style="font:var(--text-body-role);color:var(--teal-100)">tlvpatientadvocate@gmail.com</span>
+      <span style="font:var(--text-small-role);color:var(--mint-300)">A person answers.</span>
+    </div>
+  </div>
+  <div data-foot-legal style="max-width:var(--container);margin:var(--space-9) auto 0;padding-top:var(--space-6);border-top:1px solid rgba(255,255,255,.14);display:flex;flex-wrap:wrap;gap:var(--space-5);justify-content:space-between;font:var(--text-small-role);color:var(--teal-200)">
+    <span>© 2026 TLV Patient Care Consultants, LLC</span>
+    <span style="max-width:70ch">TLV Patient Care does not provide medical advice, diagnosis, or treatment recommendations. We help you understand the advice you have already been given.</span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200},&quot;page&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;services&quot;,&quot;about&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;'home'|'services'|'about'&quot;,&quot;section&quot;:&quot;Preview&quot;},&quot;headlineVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;C — more direct&quot;,&quot;Primary&quot;,&quot;B — more emotional&quot;,&quot;D — more problem-led&quot;],&quot;default&quot;:&quot;C — more direct&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage hero&quot;},&quot;showTrustLine&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage hero&quot;},&quot;showFaq&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Services page&quot;}}">
+class Component extends DCLogic {
+  state = { page: null };
+
+  get page(){
+    return this.state.page || this.hashPage() || this.props.page || 'home';
+  }
+
+  hashPage(){
+    const h = (window.location.hash || '').replace('#','');
+    return ['home','services','about','proxy','proxy-form'].includes(h) ? h : null;
+  }
+
+  toggleMenu = () => this.setState(s => ({menuOpen: !s.menuOpen}));
+
+  chromeStyles(){
+    const open = !!this.state.menuOpen;
+    const ease = 'cubic-bezier(.2,.8,.3,1)';
+    const line = {display:'block', width:'24px', height:'2px', borderRadius:'2px',
+      background:'var(--teal-800)', transition:`transform .28s ${ease}, opacity .18s ease`};
+    const showSticky = this.state.pastHero && !this.state.booking && !open;
+    return {
+      menuOpen: open,
+      burger1: {...line, transform: open ? 'translateY(7px) rotate(45deg)' : 'none'},
+      burger2: {...line, opacity: open ? 0 : 1},
+      burger3: {...line, transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none'},
+      menuStyle: {position:'absolute', top:'100%', left:0, right:0,
+        background:'rgba(253,251,248,.97)', backdropFilter:'blur(10px)',
+        borderBottom:'1px solid var(--border-subtle)', boxShadow:'var(--shadow-md)',
+        opacity: open ? 1 : 0, visibility: open ? 'visible' : 'hidden',
+        transform: open ? 'none' : 'translateY(-10px)',
+        pointerEvents: open ? 'auto' : 'none',
+        transition:`transform .28s ${ease}, opacity .22s ease, visibility 0s linear ${open ? '0s' : '.28s'}`},
+      stickyStyle: {position:'fixed', left:0, right:0, bottom:0, zIndex:40,
+        padding:'var(--space-3) var(--space-5) calc(var(--space-3) + env(safe-area-inset-bottom,0px))',
+        background:'rgba(253,251,248,.94)', backdropFilter:'blur(10px)',
+        borderTop:'1px solid var(--border-subtle)',
+        boxShadow:'0 -8px 24px -16px rgba(15,58,60,.4)',
+        transform: showSticky ? 'none' : 'translateY(130%)',
+        opacity: showSticky ? 1 : 0,
+        pointerEvents: showSticky ? 'auto' : 'none',
+        transition:`transform .32s ${ease}, opacity .24s ease`}
+    };
+  }
+
+  /* The bottom bar mirrors the hero CTA: it appears once that button has
+     scrolled off the top and retracts when it comes back. Measured from the
+     scroll listener rather than an IntersectionObserver, which does not fire
+     reliably in every host. */
+  syncHeroCta = () => {
+    const el = document.querySelector('main [data-actions]');
+    const past = !!el && el.getBoundingClientRect().bottom < 0;
+    if(past !== this._past){ this._past = past; this.setState({pastHero:past}); }
+  };
+
+  /* Two independent triggers on purpose. The measurement is the same either
+     way, and the _past guard means whichever fires first wins and the other
+     is a no-op — so the bar still works if a host suppresses one of them. */
+  watchHeroCta(){
+    if(this._ctaIo) this._ctaIo.disconnect();
+    clearTimeout(this._ctaRetry);
+    const el = document.querySelector('main [data-actions]');
+    if(!el){ this._ctaRetry = setTimeout(() => this.watchHeroCta(), 150); return; }
+    if('IntersectionObserver' in window){
+      this._ctaIo = new IntersectionObserver(this.syncHeroCta, {threshold:0});
+      this._ctaIo.observe(el);
+    }
+    this.syncHeroCta();
+  }
+
+  go = (p) => {
+    this._past = false;
+    this.setState({page:p, menuOpen:false, pastHero:false});
+    if(window.location.hash !== '#'+p) window.history.pushState(null,'','#'+p);
+    window.scrollTo({top:0,behavior:'auto'});
+  };
+
+  book = () => {
+    const now = new Date();
+    this.setState({
+      booking:{step:1, month:new Date(now.getFullYear(), now.getMonth(), 1), date:null, time:null,
+        who:'', whoOther:'', format:'', location:'', first:'', last:'', phone:'', email:'', note:''}
+    });
+    document.body.style.overflow = 'hidden';
+    // The month grid is ~31 buttons. Painting it in the same commit as the
+    // dialog leaves the entrance animation pending for most of a second, so
+    // the shell paints first and the days arrive on the next frame.
+    /* Two macrotasks, not requestAnimationFrame: rAF is queued behind the
+       dialog's own first paint, which its async component mounts make slow.
+       The first tick brings in the month grid, the second starts the entrance
+       once the closed transform has been painted. */
+    /* Deferred only so the dialog shell paints before the month's ~31 buttons.
+       No animation depends on this frame any more, so the sooner tick wins. */
+    setTimeout(() => this.setState({calReady:true}), 0);
+  };
+
+  closeBooking = () => { document.body.style.overflow = ''; this.setState({booking:null, calReady:false}); };
+  stop = (e) => { e.stopPropagation(); };
+  patch = (o) => this.setState(s => ({booking:{...s.booking, ...o}}));
+
+  fmtDate(d){
+    return d.toLocaleDateString('en-US',{weekday:'long', month:'long', day:'numeric'});
+  }
+
+  buildCells(b){
+    const first = b.month;
+    const y = first.getFullYear(), m = first.getMonth();
+    const lead = first.getDay();
+    const days = new Date(y, m+1, 0).getDate();
+    const today = new Date(); today.setHours(0,0,0,0);
+    const horizon = new Date(today); horizon.setDate(horizon.getDate()+60);
+    const base = {height:'52px',border:'2px solid transparent',borderRadius:'var(--radius-pill)',
+      fontFamily:'var(--font-display)',fontSize:'var(--size-body)',fontWeight:600,background:'transparent',
+      transition:'background .18s ease,color .18s ease,border-color .18s ease'};
+    const cells = [];
+    for(let i=0;i<lead;i++) cells.push({label:'', disabled:true, style:{...base,visibility:'hidden'}, onClick:()=>{}});
+    for(let d=1; d<=days; d++){
+      const dt = new Date(y,m,d);
+      const weekend = dt.getDay()===0 || dt.getDay()===6;
+      const open = !weekend && dt > today && dt < horizon;
+      const sel = b.date && dt.getTime() === b.date.getTime();
+      let style;
+      if(sel) style = {...base, background:'var(--brand)', color:'var(--warm-0)', cursor:'pointer'};
+      else if(open) style = {...base, background:'var(--surface-brand-soft)', color:'var(--teal-800)',
+        borderColor:'var(--teal-100)', cursor:'pointer'};
+      else style = {...base, color:'var(--text-muted)', opacity:.45, cursor:'not-allowed'};
+      cells.push({label:String(d), disabled:!open, style,
+        onClick: open ? () => this.patch({date:dt, time:null}) : () => {}});
+    }
+    return cells;
+  }
+
+  buildSlots(b){
+    const times = ['8:00am','9:00am','10:00am','11:00am','1:00pm','2:00pm','3:00pm','4:00pm','5:00pm'];
+    const base = {minHeight:'52px',padding:'0 18px',borderRadius:'var(--radius-pill)',
+      fontFamily:'var(--font-display)',fontSize:'var(--size-body)',fontWeight:600,cursor:'pointer',
+      border:'2px solid var(--teal-100)',background:'var(--surface-card)',color:'var(--teal-800)',
+      textAlign:'center',width:'100%',transition:'background .18s ease,color .18s ease,border-color .18s ease'};
+    return times.map(t => ({label:t, onClick:() => this.patch({time:t}),
+      style: b.time===t ? {...base, background:'var(--brand)', color:'var(--warm-0)', borderColor:'var(--brand)'} : base}));
+  }
+
+  pills(list, current, key){
+    const base = {minHeight:'48px',padding:'0 18px',borderRadius:'var(--radius-pill)',
+      fontFamily:'var(--font-display)',fontSize:'var(--size-body)',fontWeight:600,cursor:'pointer',
+      border:'2px solid var(--border-strong)',background:'var(--surface-card)',color:'var(--text-body)',
+      display:'inline-flex',alignItems:'center',gap:'10px',
+      transition:'background .18s ease,color .18s ease,border-color .18s ease'};
+    const U = 'https://cdn.jsdelivr.net/npm/lucide-static@0.544.0/icons/';
+    return list.map(o => {
+      const l = typeof o === 'string' ? o : o.label;
+      const ic = typeof o === 'string' ? null : o.icon;
+      return {label:l, icon: ic || undefined,
+        iconStyle: ic ? {width:'22px', height:'22px', backgroundColor:'currentColor',
+          WebkitMaskImage:`url(${U}${ic}.svg)`, maskImage:`url(${U}${ic}.svg)`} : {display:'none'},
+        onClick:() => this.patch({[key]:l}),
+        style: current===l ? {...base, background:'var(--teal-50)', borderColor:'var(--teal-400)', color:'var(--teal-800)'} : base};
+    });
+  }
+
+  /* The bundled Button build predates the `cta` variant (the design-system
+     source has it), so the Eggplant contrast fill is passed as a real prop.
+     Button spreads `...style` last, so this wins over the primary fallback —
+     including over its hover map, hence the hover handling here. */
+  ctaProps(){
+    const base = {background:'var(--cta)', color:'var(--cta-on)', borderColor:'var(--cta)'};
+    const hov  = {background:'var(--cta-hover)', color:'var(--cta-on)', borderColor:'var(--cta-hover)'};
+    return {
+      style: this.state.ctaHover ? hov : base,
+      onMouseEnter: () => this.setState({ctaHover:true}),
+      onMouseLeave: () => this.setState({ctaHover:false})
+    };
+  }
+
+
+  proxyPatch = (o) => this.setState(s => ({proxy: {...(s.proxy||this.proxyDefaults()), ...o}}));
+
+  proxyDefaults(){
+    return {clientName:'', clientDob:'', clientPhone:'', clientEmail:'', clientAddress:'',
+      repName:'', repRelationship:'', repPhone:'', repEmail:'',
+      providers:'', scopePortal:false, scopeRecords:false, scopeSpeak:false,
+      startDate:'', endDate:'', signerName:'', signatureText:'', signDate:'', ack:false, submitted:false};
+  }
+
+  proxyVals(){
+    const p = this.state.proxy || this.proxyDefaults();
+    const field = (key, extra) => ({value:p[key], onChange:(e)=>this.proxyPatch({[key]:e.target.value}), ...extra});
+    const check = (key) => ({checked:p[key], onChange:()=>this.proxyPatch({[key]: !p[key]})});
+    const scopeChosen = p.scopePortal || p.scopeRecords || p.scopeSpeak;
+    const complete = p.clientName.trim() && p.clientDob.trim() && p.repName.trim() &&
+      scopeChosen && p.startDate.trim() && p.signatureText.trim() && p.signDate.trim() && p.ack;
+    return {
+      proxySubmitted: !!p.submitted,
+      proxyNotSubmitted: !p.submitted,
+      proxyIncomplete: !complete,
+      fClientName: field('clientName'), fClientDob: field('clientDob'),
+      fClientPhone: field('clientPhone'), fClientEmail: field('clientEmail'),
+      fClientAddress: field('clientAddress'),
+      fRepName: field('repName'), fRepRelationship: field('repRelationship'),
+      fRepPhone: field('repPhone'), fRepEmail: field('repEmail'),
+      fProviders: field('providers'),
+      cScopePortal: check('scopePortal'), cScopeRecords: check('scopeRecords'), cScopeSpeak: check('scopeSpeak'),
+      fStartDate: field('startDate'), fEndDate: field('endDate'),
+      fSignerName: field('signerName'), fSignatureText: field('signatureText'), fSignDate: field('signDate'),
+      cAck: check('ack'),
+      submitProxy: () => this.proxyPatch({submitted:true}),
+      resetProxy: () => this.setState({proxy: this.proxyDefaults()})
+    };
+  }
+
+  faq(){
+    return [
+          {q:'Do you make medical decisions for us?', a:'No. We do not diagnose, prescribe, or tell you which treatment to choose. We explain the information you have been given, help you prepare the questions, and keep the next steps organized. The decisions stay with your family and your licensed healthcare professionals.'},
+          {q:'Are you connected to a hospital or insurer?', a:'No. TLV Patient Care is independent from hospitals, medical facilities, and insurance companies. Our responsibility is to the client and family we are supporting.'},
+          {q:'What does it cost?', a:'Each package is a flat fee, agreed before anything begins, with a monthly option for ongoing support. Prices are not listed here because the right package depends on what you are facing. We will walk you through it on your free call.'},
+          {q:'Can you help if I live in another city?', a:'Yes. Many families work this way. Your advocate can be in the room with your parent while you join by phone or video, and follows up with you directly afterwards.'},
+          {q:'How do you get access to my parent\u2019s records?', a:'Through a signed written proxy. It names your advocate specifically, and your parent can withdraw it at any time.'},
+          {q:'Does insurance cover this?', a:'No. We are a private service and do not bill insurance.'}
+        ];
+  }
+
+  /* The design system's Accordion mounts and unmounts its panel, so it cannot
+     animate open. Same visual language, built here so the height can tween. */
+  faqRows(){
+    const open = this.state.faqOpen;
+    return this.faq().map((it,i) => {
+      const on = open === i;
+      return {
+        q: it.q, a: it.a, open: on, openAttr: on ? '' : null,
+        toggle: () => this.setState({faqOpen: on ? -1 : i}),
+        rowStyle: {background:'var(--surface-card)', borderRadius:'var(--radius-md)', overflow:'hidden',
+          border:'1px solid ' + (on ? 'var(--teal-200)' : 'var(--border-subtle)'),
+          boxShadow: on ? 'var(--shadow-sm)' : 'none'},
+        qStyle: {display:'flex', alignItems:'center', justifyContent:'space-between', gap:'var(--space-4)',
+          width:'100%', minHeight:'var(--control-h)', padding:'var(--space-4) var(--space-6)',
+          background: on ? 'var(--teal-50)' : 'transparent', border:0, cursor:'pointer', textAlign:'start',
+          font:'var(--text-h5)', fontFamily:'var(--font-display)', color:'var(--text-strong)',
+          transition:'background .22s ease'},
+        chevStyle: {display:'inline-flex', flex:'none', transform: on ? 'rotate(180deg)' : 'none'}
+      };
+    });
+  }
+
+  /* Header button: the logo's own teal → violet ramp, no visible border. */
+  headerCtaProps(){
+    const on = this.state.headerHover;
+    return {
+      /* `to right` and no border: an angled gradient projects its ends onto the
+         pill's rounded caps, which is what pushed violet onto the teal end and
+         teal onto the violet end, and a transparent border let the fill bleed
+         under it. */
+      style: {background:'linear-gradient(to right,var(--teal-500) 0%,var(--violet-500) 100%)',
+        backgroundClip:'padding-box', color:'var(--warm-0)', border:'none',
+        filter: on ? 'saturate(1.12) brightness(.94)' : 'none'},
+      onMouseEnter: () => this.setState({headerHover:true}),
+      onMouseLeave: () => this.setState({headerHover:false})
+    };
+  }
+
+  /* Hero CTA: Fresh Green with deep-teal ink. The eggplant contrast fill is
+     right for a closing band on a dark ground, but on this bright wash the
+     hope color reads warmer and carries further. */
+  heroCtaProps(){
+    const on = this.state.heroHover;
+    return {
+      style: {background: on ? 'var(--green-500)' : 'var(--green-400)', color:'var(--teal-900)',
+        border:'none', boxShadow: on ? 'var(--shadow-md)' : 'var(--shadow-sm)',
+        fontWeight:700, transition:'background .18s ease, box-shadow .22s ease'},
+      onMouseEnter: () => this.setState({heroHover:true}),
+      onMouseLeave: () => this.setState({heroHover:false})
+    };
+  }
+
+  navVars(page){
+    const on = {background:'var(--teal-50)', color:'var(--teal-800)'};
+    const off = {background:'transparent', color:'var(--text-muted)'};
+    const v = {};
+    for(const p of ['home','services','about']){
+      const s = page===p ? on : off;
+      v['--nav-'+p+'-bg'] = s.background;
+      v['--nav-'+p+'-fg'] = s.color;
+    }
+    return v;
+  }
+
+  componentDidMount(){
+    const v = this.navVars(this.page);
+    for(const k in v) document.documentElement.style.setProperty(k, v[k]);
+    if(!this._scroll){
+      this._scroll = () => {
+        document.documentElement.style.setProperty(
+          '--hdr-shadow', window.scrollY > 12 ? '0 6px 24px -12px rgba(15,58,60,.34)' : 'none');
+        this.syncHeroCta();
+      };
+      window.addEventListener('scroll', this._scroll, {passive:true});
+      window.addEventListener('resize', this._scroll, {passive:true});
+      this._scroll();
+    }
+    if(this._ctaFor !== this.page){ this._ctaFor = this.page; this.watchHeroCta(); }
+    if(!this._hash){
+      this._hash = () => { const p = this.hashPage(); if(p) this.setState({page:p}); };
+      window.addEventListener('hashchange', this._hash);
+    }
+  }
+  componentDidUpdate(){
+    this.componentDidMount();
+  }
+
+  /* No entrance animation on the dialog, deliberately. A keyframe, a CSS
+     transition and a WAAPI animation all resolve their start on the first
+     rendering opportunity after the dialog mounts, and that frame arrives late
+     here however cheap the commit is made — leaving the panel visibly 14px low
+     and scaled for about a second, every time. An offset that may not animate
+     is worse than no offset, so the dialog opens at its final position. Its
+     content still fades in per step, and the month grid is still deferred a
+     frame so the shell paints promptly. */
+  componentWillUnmount(){
+    if(this._scroll){ window.removeEventListener('scroll', this._scroll); window.removeEventListener('resize', this._scroll); }
+    if(this._ctaIo) this._ctaIo.disconnect();
+    clearTimeout(this._ctaRetry);
+    if(this._hash) window.removeEventListener('hashchange', this._hash);
+  }
+
+  renderVals(){
+    const page = this.page;
+    const hl = this.props.headlineVariant || 'C \u2014 more direct';
+    const link = React.createElement('button', {
+      onClick: () => this.go('about'),
+      style:{background:'none',border:0,padding:0,minHeight:44,display:'inline-flex',alignItems:'center',gap:8,
+        fontFamily:'var(--font-display)',fontSize:'var(--size-body)',fontWeight:600,color:'var(--teal-700)',cursor:'pointer'}
+    }, 'Read Terry\u2019s story');
+    const badge = React.createElement('span', {
+      style:{display:'inline-flex',alignItems:'center',padding:'6px 14px',background:'var(--surface-accent-soft)',
+        color:'var(--green-800)',border:'1px solid var(--green-200)',borderRadius:'var(--radius-pill)',
+        font:'var(--text-small-role)',fontWeight:600}
+    }, 'Most families start here');
+    const b = this.state.booking;
+    const dim = 'var(--border-subtle)', lit = 'var(--brand)';
+    const titles = {1:'Pick a day and time that suits you', 2:'A few details, then we are set',
+      3:'Your consultation is booked'};
+    const blurbs = {1:'Thirty minutes, however you would like to meet. Bring a family member if you like.',
+      2:'Only what we need to reach you at the right time. Nothing is shared with anyone else.',
+      3:'A confirmation is on its way.'};
+    const booking = b ? {
+      bookingOpen:true,
+      isStep1: b.step===1, isStep2: b.step===2, isStep3: b.step===3,
+      stepTitle: titles[b.step], stepBlurb: blurbs[b.step],
+      bar1: lit, bar2: b.step>1 ? lit : dim, bar3: b.step>2 ? lit : dim,
+      monthLabel: b.month.toLocaleDateString('en-US',{month:'long', year:'numeric'}),
+      dayNames: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+      calReady: !!this.state.calReady,
+      cells: this.state.calReady ? this.buildCells(b) : [],
+      slots: this.buildSlots(b),
+      hasDate: !!b.date, noDate: !b.date,
+      slotHeading: b.date ? this.fmtDate(b.date) : 'Open times',
+      step1Incomplete: !(b.date && b.time),
+      step2Incomplete: !(b.who && (b.who!=='Other' || b.whoOther.trim()) && b.format
+        && (b.format!=='In person' || b.location.trim())
+        && b.first.trim() && b.last.trim() && b.email.trim() && b.phone.trim()),
+      chosenLabel: b.date ? this.fmtDate(b.date) + ' at ' + b.time : '',
+      confirmLine: [b.format, b.who ? 'about ' + (b.who==='Other' ? b.whoOther : b.who.toLowerCase()) : '']
+        .filter(Boolean).join(' · '),
+      whoOptions: this.pills(['Myself','My parent','Another family member','Other'], b.who, 'who'),
+      whoIsOther: b.who==='Other',
+      isInPerson: b.format==='In person',
+      formatOptions: this.pills([
+        {label:'Phone call', icon:'phone'},
+        {label:'Video call', icon:'video'},
+        {label:'In person', icon:'home'}], b.format, 'format'),
+      fFirst:b.first, fLast:b.last, fWhoOther:b.whoOther, fLocation:b.location,
+      fPhone:b.phone, fEmail:b.email, fNote:b.note,
+      setFirst:(e)=>this.patch({first:e.target.value}),
+      setLast:(e)=>this.patch({last:e.target.value}),
+      setWhoOther:(e)=>this.patch({whoOther:e.target.value}),
+      setLocation:(e)=>this.patch({location:e.target.value}),
+      setPhone:(e)=>this.patch({phone:e.target.value}),
+      setEmail:(e)=>this.patch({email:e.target.value}),
+      setNote:(e)=>this.patch({note:e.target.value}),
+      prevMonth: () => this.patch({month:new Date(b.month.getFullYear(), b.month.getMonth()-1, 1)}),
+      nextMonth: () => this.patch({month:new Date(b.month.getFullYear(), b.month.getMonth()+1, 1)}),
+      toStep1: () => this.patch({step:1}),
+      toStep2: () => this.patch({step:2}),
+      confirm: () => this.patch({step:3}),
+      closeBooking: this.closeBooking, stop: this.stop
+    } : {bookingOpen:false, closeBooking:this.closeBooking, stop:this.stop};
+
+    return {
+      ...booking,
+      isHome: page==='home', isServices: page==='services', isAbout: page==='about', isProxy: page==='proxy' || page==='proxy-form',
+      goHome: () => this.go('home'), goServices: () => this.go('services'), goAbout: () => this.go('about'),
+      goProxy: () => this.go('proxy-form'),
+      ...this.proxyVals(),
+      goHomeMenu: () => this.go('home'), goServicesMenu: () => this.go('services'), goAboutMenu: () => this.go('about'),
+      ...this.chromeStyles(),
+      toggleMenu: this.toggleMenu,
+      book: this.book,
+      hlPrimary: hl==='Primary', hlB: hl==='B \u2014 more emotional',
+      hlC: hl==='C \u2014 more direct', hlD: hl==='D \u2014 more problem-led',
+      showTrust: this.props.showTrustLine !== false,
+      showFaq: this.props.showFaq !== false,
+      stepCurrent: 0,
+      ctaProps: this.ctaProps(),
+      heroCtaProps: this.heroCtaProps(),
+      headerCtaProps: this.headerCtaProps(),
+      faqRows: this.faqRows(),
+      faqWidth: {width:'100%'},
+      aboutLink: link,
+      mostFamilies: badge,
+      steps: [
+        {label:'A free 30-minute call', note:'Tell us what has happened. We will explain what we can help with and what we cannot.'},
+        {label:'A written access proxy', note:'You sign a proxy that lets us see the record. Nothing happens before that.'},
+        {label:'The first working session', note:'Portals, records and the medication list, sorted out at your parent\u2019s pace.'},
+        {label:'Before the appointment', note:'Labs and scans reviewed together, and the questions written down.'},
+        {label:'In the room, and afterwards', note:'We take the notes so your parent can listen, then explain it again in plain language.'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
